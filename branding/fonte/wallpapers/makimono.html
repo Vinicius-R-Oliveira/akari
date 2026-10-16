@@ -1,0 +1,46 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Akari · 巻物 Makimono — um poema em colunas, como um pergaminho -->
+<style>
+  @font-face{font-family:"Fraktur";src:url("../fonts/UnifrakturCook-Bold.woff2");font-weight:700}
+  html,body{margin:0;width:3840px;height:2160px;background:#060606;overflow:hidden}
+  .layer{position:absolute;inset:0}
+  #poem{position:absolute;right:400px;top:210px;display:flex;flex-direction:row-reverse;gap:130px}
+  .col{writing-mode:vertical-rl;font-family:"Noto Serif CJK JP";font-weight:500;font-size:112px;letter-spacing:.22em;color:#ececec;white-space:nowrap;
+       text-shadow:0 0 40px rgba(255,255,255,.12);position:relative}
+  .col.small{font-size:64px;color:rgba(255,255,255,.5);letter-spacing:.6em;padding-top:120px}
+  .col .big{font-size:200px;font-weight:900}
+  .rule{width:2px;background:linear-gradient(rgba(255,255,255,0),rgba(255,255,255,.35) 15%,rgba(255,255,255,.35) 85%,rgba(255,255,255,0))}
+  #flower{position:absolute;left:420px;top:1260px;width:620px;height:620px}
+  #flower .ol{stroke-width:3} #flower .bl{stroke-width:3.6}
+  #word{position:absolute;left:450px;top:420px;font-family:"Fraktur";font-weight:700;font-size:300px;color:#e8e8e8}
+  #sub{position:absolute;left:460px;top:780px;font-family:"DejaVu Sans Mono";font-size:24px;letter-spacing:.4em;color:rgba(255,255,255,.35);line-height:1.9}
+  #hanko{position:absolute;left:1120px;top:1700px;width:150px;height:150px;border-radius:14px;background:#e6e6e6;display:grid;place-items:center;
+         font-family:"Noto Serif CJK JP";font-weight:900;font-size:64px;line-height:1;color:#060606;text-align:center}
+</style></head>
+<body>
+<svg class="layer" width="3840" height="2160">
+  <defs><radialGradient id="aura" cx="18%" cy="72%" r="30%"><stop offset="0" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>
+  <rect width="3840" height="2160" fill="url(#aura)"/>
+  <rect x="120" y="96" width="3600" height="1968" rx="40" fill="none" stroke="#fff" stroke-opacity=".38" stroke-width="3" stroke-dasharray="26 18"/>
+</svg>
+<div id="poem">
+  <div class="col"><span class="big">夜</span>の底に　ひとつの灯り</div>
+  <div class="rule"></div>
+  <div class="col">花びらは　光を抱いて</div>
+  <div class="rule"></div>
+  <div class="col">風に舞い　静かに咲く</div>
+  <div class="rule"></div>
+  <div class="col">はじまりの　あかりよ</div>
+  <div class="col small">第二章　まきもの</div>
+</div>
+<div id="word">akari</div>
+<div id="sub">MAKIMONO · 巻物<br>UM POEMA PARA A LUZ<br>AKR—007</div>
+<!--FLOR-->
+<div id="hanko">灯<br>り</div>
+<svg class="layer" width="3840" height="2160" style="mix-blend-mode:screen;opacity:.09">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="3840" height="2160" filter="url(#n)"/>
+</svg>
+<svg class="layer" width="3840" height="2160"><defs><radialGradient id="vig" cx="50%" cy="50%" r="78%"><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".85"/></radialGradient></defs><rect width="3840" height="2160" fill="url(#vig)"/></svg>
+</body></html>

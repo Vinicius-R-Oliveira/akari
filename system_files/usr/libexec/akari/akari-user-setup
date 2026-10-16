@@ -19,7 +19,7 @@ say() { echo "[akari-user-setup] $*"; }
 # Copia src → dst só se dst ainda não existir
 copy_if_missing() {
     local src="$1" dst="$2"
-    [[ -e "${src}" ]] || return 0
+    [[ -e "${src}" ]] || return 1
     if [[ ! -e "${dst}" ]]; then
         mkdir -p "$(dirname "${dst}")"
         cp -a "${src}" "${dst}"
@@ -76,6 +76,20 @@ for t in "${DEF}"/caelestia/templates/*; do
 done
 touch "${C}/user-config.fish"
 
+# Gancho dos wallpapers animados no CLI do Caelestia
+if [[ ! -e "${C}/cli.json" ]]; then
+    cp "${DEF}/caelestia/cli.json" "${C}/cli.json"
+elif command -v jq >/dev/null && [[ "$(jq -r '.wallpaper.postHook // ""' "${C}/cli.json" 2>/dev/null)" == "" ]]; then
+    jq '.wallpaper.postHook = "/usr/libexec/akari/akari-wallpaper-hook"' "${C}/cli.json" >"${C}/cli.json.tmp" &&
+        mv "${C}/cli.json.tmp" "${C}/cli.json"
+fi
+
+# Migração 2: o tema passa a ser escolhido pelo wallpaper (claro/escuro, cor)
+if [[ ! -e "${AKARI_STATE}/migr-2-smart" ]] && command -v jq >/dev/null && [[ -f "${C}/shell.json" ]]; then
+    jq '.services.smartScheme = true' "${C}/shell.json" >"${C}/shell.json.tmp" && mv "${C}/shell.json.tmp" "${C}/shell.json"
+    touch "${AKARI_STATE}/migr-2-smart"
+fi
+
 # ── 4. Terminal ──────────────────────────────────────────────
 copy_if_missing "${DEF}/kitty/kitty.conf" "${CONFIG}/kitty/kitty.conf"
 
@@ -87,10 +101,33 @@ if [[ ! -e "${CONFIG}/kdeglobals" || -L "${CONFIG}/kdeglobals" ]]; then
 fi
 
 # ── 6. Wallpapers e tema inicial (preto e branco seguindo o wallpaper) ─
-for w in /usr/share/akari/wallpapers/*; do
+# Cada wallpaper novo da Akari é oferecido uma vez: se você apagar, ele não volta.
+OFERECIDOS="${AKARI_STATE}/wallpapers-oferecidos"
+touch "${OFERECIDOS}"
+for w in /usr/share/akari/wallpapers/*.jpg /usr/share/akari/wallpapers/*.png; do
     [[ -f "${w}" ]] || continue
-    copy_if_missing "${w}" "${WALLDIR}/$(basename "${w}")"
+    n="$(basename "${w}")"
+    grep -qxF "${n}" "${OFERECIDOS}" && continue
+    copy_if_missing "${w}" "${WALLDIR}/${n}"
+    echo "${n}" >>"${OFERECIDOS}"
 done
+
+# Tema de cada wallpaper da Akari (preto e branco, claro, pêssego...).
+# O Caelestia guarda a escolha "inteligente" de cada imagem em
+# ~/.cache/caelestia/wallpapers/<sha256>/smart.json; a Akari já deixa pronta.
+TEMAS=/usr/share/akari/wallpapers/temas.json
+if [[ -f "${TEMAS}" ]] && command -v jq >/dev/null; then
+    CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/caelestia/wallpapers"
+    while IFS=$'\t' read -r n variant mode; do
+        f="${WALLDIR}/${n}"
+        [[ -f "${f}" ]] || continue
+        h="$(sha256sum "${f}" | cut -d' ' -f1)"
+        if [[ ! -e "${CACHE}/${h}/smart.json" ]]; then
+            mkdir -p "${CACHE}/${h}"
+            printf '{"variant": "%s", "mode": "%s"}\n' "${variant}" "${mode}" >"${CACHE}/${h}/smart.json"
+        fi
+    done < <(jq -r 'to_entries[] | [.key, .value.variant, .value.mode] | @tsv' "${TEMAS}")
+fi
 
 if [[ ! -e "${AKARI_STATE}/theme-done" ]] && command -v caelestia >/dev/null; then
     say "Aplicando wallpaper e cores iniciais"

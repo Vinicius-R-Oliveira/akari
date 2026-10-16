@@ -1,0 +1,76 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Akari · 夜桜 Yozakura — galho de cerejeira à noite, flores piscando e pétalas soltando (vídeo em loop) -->
+<style>
+  @font-face{font-family:"Fraktur";src:url("../../fonts/UnifrakturCook-Bold.woff2");font-weight:700}
+  html,body{margin:0;width:1920px;height:1080px;background:#040405;overflow:hidden}
+  .layer{position:absolute;inset:0}
+  #kanji{position:absolute;left:150px;top:120px;writing-mode:vertical-rl;font-family:"Noto Serif CJK JP";font-weight:900;font-size:330px;line-height:1;
+         color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.3);letter-spacing:.05em}
+  #word{position:absolute;left:560px;bottom:150px;font-family:"Fraktur";font-weight:700;font-size:120px;color:#e9e9e9}
+  #sub{position:absolute;left:566px;bottom:110px;font-family:"DejaVu Sans Mono";font-size:12px;letter-spacing:.45em;color:rgba(255,255,255,.35)}
+  #galho{position:absolute;inset:0;transform-origin:1920px 0;animation:galho 8s ease-in-out infinite alternate}
+  @keyframes galho{from{transform:rotate(-.6deg)}to{transform:rotate(.6deg)}}
+  .flor{transform-box:fill-box;transform-origin:center;animation:pisca ease-in-out infinite}
+  @keyframes pisca{0%,100%{opacity:.55}50%{opacity:1}}
+</style>
+<script src="comum.js"></script>
+</head>
+<body>
+<svg class="layer" width="1920" height="1080">
+  <defs>
+    <radialGradient id="aura" cx="70%" cy="30%" r="55%"><stop offset="0" stop-color="#fff" stop-opacity=".07"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+    <radialGradient id="brilho"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#aura)"/>
+  <rect x="60" y="48" width="1800" height="984" rx="20" fill="none" stroke="#fff" stroke-opacity=".3" stroke-width="1.5" stroke-dasharray="13 9"/>
+</svg>
+<div id="kanji">夜桜</div>
+<svg id="galho" width="1920" height="1080"></svg>
+<div id="petalas" class="layer"></div>
+<div id="word">akari</div>
+<div id="sub">YOZAKURA · 夜桜 · AKR—009</div>
+<svg class="layer" width="1920" height="1080" style="mix-blend-mode:screen;opacity:.07">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="1920" height="1080" filter="url(#n)"/>
+</svg>
+<svg class="layer" width="1920" height="1080"><defs><radialGradient id="vig" cx="55%" cy="45%" r="78%"><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".85"/></radialGradient></defs><rect width="1920" height="1080" fill="url(#vig)"/></svg>
+<script>
+  // Galho desenhado com curvas (sai do canto superior direito)
+  const r = semente(31);
+  const ramos = [
+    { d: "M1960 -20 C1720 120 1560 160 1380 300 C1220 420 1120 430 980 520 C860 600 800 690 720 760", w: 26 },
+    { d: "M1500 220 C1420 330 1400 420 1330 520 C1290 580 1240 620 1190 690", w: 14 },
+    { d: "M1210 380 C1130 360 1050 380 960 360 C900 350 860 330 820 300", w: 11 },
+    { d: "M1020 490 C990 570 1000 640 960 720 C940 760 910 790 880 830", w: 9 },
+    { d: "M1700 120 C1660 230 1690 330 1660 420", w: 10 },
+    { d: "M860 620 C780 600 700 620 620 590", w: 7 },
+  ];
+  let g = "";
+  for (const ramo of ramos) {
+    g += `<path d="${ramo.d}" fill="none" stroke="#2b2b2b" stroke-width="${ramo.w * 0.7}" stroke-linecap="round"/>`;
+    g += `<path d="${ramo.d}" fill="none" stroke="#fff" stroke-opacity=".4" stroke-width="${Math.max(1.2, ramo.w * 0.12)}" stroke-linecap="round" transform="translate(-2 -3)"/>`;
+  }
+  // Flores ao longo dos galhos
+  const caminhos = ramos.map(rm => { const p = document.createElementNS("http://www.w3.org/2000/svg", "path"); p.setAttribute("d", rm.d); return p; });
+  const tmp = document.getElementById("galho");
+  caminhos.forEach(p => tmp.appendChild(p));
+  const periodos = [LOOP / 4, LOOP / 2, LOOP / 8];
+  for (let i = 0; i < 70; i++) {
+    const p = caminhos[Math.floor(r() * caminhos.length)];
+    const L = p.getTotalLength();
+    const pt = p.getPointAtLength(L * (0.15 + r() * 0.85));
+    const x = pt.x + (r() - 0.5) * 70, y = pt.y + (r() - 0.5) * 60;
+    const s = 0.16 + r() * 0.2, rot = Math.floor(r() * 72);
+    const per = periodos[Math.floor(r() * periodos.length)];
+    const petals = [0, 72, 144, 216, 288].map(a => `<path d="${PETALA}" transform="rotate(${a})"/>`).join("");
+    g += `<g class="flor" style="animation-duration:${per}s;animation-delay:${-(r() * per).toFixed(2)}s" transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot}) scale(${s.toFixed(2)})">
+      <circle r="70" fill="url(#brilho)"/>
+      <g fill="#fff" fill-opacity=".14" stroke="#fff" stroke-width="5" stroke-linejoin="round">${petals}</g>
+      <circle r="9" fill="#fff"/></g>`;
+  }
+  caminhos.forEach(p => p.remove());
+  tmp.insertAdjacentHTML("beforeend", `<defs><radialGradient id="brilho"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>` + g);
+  petalas(document.getElementById("petalas"), 34, { dx: -500, dy: 1300, seed: 9, tamMin: 14, tamMax: 34 });
+</script>
+</body></html>

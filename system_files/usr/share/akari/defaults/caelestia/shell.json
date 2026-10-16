@@ -48,7 +48,7 @@
         "rounding": 25
     },
     "services": {
-        "smartScheme": false
+        "smartScheme": true
     },
     "paths": {
         "wallpaperDir": "__WALLPAPER_DIR__"

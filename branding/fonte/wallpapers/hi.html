@@ -1,0 +1,50 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Akari · 灯 Hi — só o kanji "luz", gigante, com um ensō e um carimbo -->
+<style>
+  @font-face{font-family:"Fraktur";src:url("../fonts/UnifrakturCook-Bold.woff2");font-weight:700}
+  html,body{margin:0;width:3840px;height:2160px;background:#050505;overflow:hidden}
+  .layer{position:absolute;inset:0}
+  #kanji{position:absolute;left:820px;top:170px;font-family:"Noto Serif CJK JP";font-weight:900;font-size:1700px;line-height:1;
+         color:#efefef;text-shadow:0 0 90px rgba(255,255,255,.18),0 0 260px rgba(255,255,255,.08)}
+  #kanjiGhost{position:absolute;left:880px;top:220px;font-family:"Noto Serif CJK JP";font-weight:900;font-size:1700px;line-height:1;
+         color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.18)}
+  .vert{position:absolute;writing-mode:vertical-rl;font-family:"Noto Serif CJK JP";letter-spacing:.5em}
+  #hanko{position:absolute;left:3080px;top:1520px;width:230px;height:230px;border-radius:22px;background:#ececec;
+         display:grid;place-items:center;font-family:"Noto Serif CJK JP";font-weight:900;font-size:150px;color:#050505;
+         box-shadow:0 0 60px rgba(255,255,255,.12)}
+  #hanko::after{content:"";position:absolute;inset:14px;border:4px solid #050505;border-radius:12px}
+  #word{position:absolute;left:3040px;top:1790px;font-family:"Fraktur";font-weight:700;font-size:96px;color:#dcdcdc;letter-spacing:.06em}
+  .mono{position:absolute;font-family:"DejaVu Sans Mono";font-size:22px;color:rgba(255,255,255,.32);letter-spacing:.25em;line-height:1.8}
+</style></head>
+<body>
+<svg class="layer" width="3840" height="2160">
+  <defs>
+    <radialGradient id="aura" cx="40%" cy="50%" r="42%"><stop offset="0" stop-color="#fff" stop-opacity=".09"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+    <filter id="brush"><feTurbulence type="fractalNoise" baseFrequency=".012" numOctaves="3" seed="4"/><feDisplacementMap in="SourceGraphic" scale="26"/></filter>
+  </defs>
+  <rect width="3840" height="2160" fill="url(#aura)"/>
+  <!-- ensō: o círculo zen, com o traço "de pincel" -->
+  <g filter="url(#brush)" transform="rotate(-58 1660 1080)">
+    <circle cx="1660" cy="1080" r="900" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="58" stroke-linecap="round" stroke-dasharray="5000 700"/>
+    <circle cx="1660" cy="1080" r="955" fill="none" stroke="#fff" stroke-opacity=".18" stroke-width="10" stroke-linecap="round" stroke-dasharray="2600 3400" stroke-dashoffset="-900"/>
+  </g>
+  <g stroke="#fff" stroke-opacity=".55" stroke-width="3" fill="none">
+    <path d="M140 230 V150 Q140 110 180 110 H260"/><path d="M3580 110 H3660 Q3700 110 3700 150 V230"/>
+    <path d="M140 1930 V2010 Q140 2050 180 2050 H260"/><path d="M3580 2050 H3660 Q3700 2050 3700 2010 V1930"/>
+  </g>
+</svg>
+<div id="kanjiGhost">灯</div>
+<div id="kanji">灯</div>
+<div class="vert" style="left:3300px;top:300px;font-size:58px;color:rgba(255,255,255,.75)">ひ　・　あかり</div>
+<div class="vert" style="left:3200px;top:300px;font-size:26px;color:rgba(255,255,255,.35)">闇の中で　ひとつだけ　消えない光</div>
+<div id="hanko">灯</div>
+<div id="word">akari</div>
+<div class="mono" style="left:250px;top:250px">灯 · HI<br>LUZ · LAMPARINA<br>AKR—006</div>
+<div class="mono" style="left:250px;bottom:240px">火 + 丁<br>FOGO QUE FICA ACESO</div>
+<svg class="layer" width="3840" height="2160" style="mix-blend-mode:screen;opacity:.09">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="3840" height="2160" filter="url(#n)"/>
+</svg>
+<svg class="layer" width="3840" height="2160"><defs><radialGradient id="vig" cx="45%" cy="50%" r="78%"><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".85"/></radialGradient></defs><rect width="3840" height="2160" fill="url(#vig)"/></svg>
+</body></html>

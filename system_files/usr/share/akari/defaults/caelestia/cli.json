@@ -1,0 +1,5 @@
+{
+    "wallpaper": {
+        "postHook": "/usr/libexec/akari/akari-wallpaper-hook"
+    }
+}

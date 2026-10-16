@@ -16,12 +16,21 @@ on:
         options:
           - amd64
           - arm64
+      instalador:
+        description: "Instalador: padrao (Fedora) ou personalizado (visual Akari, vai para o Release iso-personalizado)"
+        required: false
+        default: padrao
+        type: choice
+        options:
+          - padrao
+          - personalizado
   pull_request:
     branches:
       - main
     paths:
       - './disk_config/disk.toml'
       - './disk_config/iso.toml'
+      - './disk_config/iso-personalizado.toml'
       - './.github/workflows/build-disk.yml'
 
 env:
@@ -31,7 +40,7 @@ env:
   BIB_IMAGE: "quay.io/centos-bootc/bootc-image-builder:latest"
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}-${{ inputs.instalador || 'padrao' }}
   cancel-in-progress: true
 
 jobs:
@@ -42,7 +51,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        disk-type: ["qcow2", "anaconda-iso"]
+        disk-type: ${{ inputs.instalador == 'personalizado' && fromJSON('["anaconda-iso"]') || fromJSON('["qcow2", "anaconda-iso"]') }}
     permissions:
       contents: write
       packages: read
@@ -87,15 +96,15 @@ jobs:
 
       - name: Apontar o instalador para a sua imagem
         run: |
-          sed -i "s|__AKARI_IMAGE__|${IMAGE_REGISTRY}/${IMAGE_NAME}:${DEFAULT_TAG}|g" ./disk_config/iso.toml
-          cat ./disk_config/iso.toml
+          sed -i "s|__AKARI_IMAGE__|${IMAGE_REGISTRY}/${IMAGE_NAME}:${DEFAULT_TAG}|g" ./disk_config/iso.toml ./disk_config/iso-personalizado.toml
+          head -20 ./disk_config/iso.toml
 
       - name: Build disk images
         id: build
         uses: osbuild/bootc-image-builder-action@8661cd3832544ad68c12dcde8681b13ab0f56a8d # main
         with:
           builder-image: ${{ env.BIB_IMAGE }}
-          config-file: ${{ matrix.disk-type == 'anaconda-iso' && './disk_config/iso.toml' || './disk_config/disk.toml' }}
+          config-file: ${{ matrix.disk-type == 'anaconda-iso' && (inputs.instalador == 'personalizado' && './disk_config/iso-personalizado.toml' || './disk_config/iso.toml') || './disk_config/disk.toml' }}
           image: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DEFAULT_TAG }}
           chown: ${{ env.USER_UID }}:${{ env.USER_GID }}
           types: ${{ matrix.disk-type }}
@@ -109,6 +118,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           OUT: ${{ steps.build.outputs.output-directory }}
           REPO: ${{ github.repository }}
+          TAG: ${{ inputs.instalador == 'personalizado' && 'iso-personalizado' || 'iso-latest' }}
         run: |
           set -euo pipefail
           trap 'echo "::error title=Release da ISO::falhou na linha ${LINENO}: ${BASH_COMMAND}"' ERR
@@ -134,9 +144,8 @@ jobs:
           printf '#!/bin/sh\ncat akari-install.iso.0* > akari-install.iso && sha256sum -c akari-install.iso.sha256\n' > juntar-iso-linux.sh
           ls -la
           echo "::notice title=Partes::$(ls -la | tr '\n' ' ')"
-          TAG=iso-latest
           if ! gh release view "${TAG}" -R "${REPO}" >/dev/null 2>&1; then
-            gh release create "${TAG}" -R "${REPO}" --title "Akari · ISO de instalação" \
+            gh release create "${TAG}" -R "${REPO}" --title "Akari · ISO de instalação (${TAG})" \
               --notes "Baixe TODAS as partes akari-install.iso.0XX e o arquivo juntar-iso. No Windows, deixe tudo na mesma pasta e dê dois cliques em juntar-iso-windows.bat. No Linux: sh juntar-iso-linux.sh. O resultado é o akari-install.iso."
           fi
           for old in $(gh release view "${TAG}" -R "${REPO}" --json assets -q '.assets[].name'); do
@@ -148,7 +157,7 @@ jobs:
         if: inputs.upload-to-s3 != true && github.event_name != 'pull_request'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: akari-${{ matrix.disk-type }}
+          name: akari-${{ matrix.disk-type }}${{ inputs.instalador == 'personalizado' && '-personalizado' || '' }}
           path: ${{ steps.build.outputs.output-directory }}
           if-no-files-found: error
           retention-days: 0

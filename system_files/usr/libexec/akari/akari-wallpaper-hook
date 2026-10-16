@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+# ─────────────────────────────────────────────────────────────
+#  Wallpapers animados da Akari.
+#  Chamado pelo Caelestia toda vez que o wallpaper muda (postHook do
+#  ~/.config/caelestia/cli.json) e também no início da sessão.
+#
+#  Se existir um vídeo com o mesmo nome da imagem escolhida (em
+#  /usr/share/akari/wallpapers/animados ou numa pasta "animados" ao lado
+#  da imagem), ele toca como wallpaper com o mpvpaper e o Caelestia
+#  esconde o fundo parado. Senão, volta ao wallpaper normal.
+#
+#  Desligar os animados: crie ~/.config/akari/no-animated
+# ─────────────────────────────────────────────────────────────
+set -u
+
+STATE="${XDG_STATE_HOME:-$HOME/.local/state}"
+CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}"
+SHELLJSON="${CONFIG}/caelestia/shell.json"
+
+WALL="${WALLPAPER_PATH:-$(cat "${STATE}/caelestia/wallpaper/path.txt" 2>/dev/null)}"
+[[ -n "${WALL}" ]] || exit 0
+
+nome="$(basename "${WALL%.*}")"
+video=""
+for d in "$(dirname "${WALL}")/animados" "$(dirname "${WALL}")" /usr/share/akari/wallpapers/animados; do
+    for ext in mp4 webm mkv mov; do
+        if [[ -f "${d}/${nome}.${ext}" ]]; then
+            video="${d}/${nome}.${ext}"
+            break 2
+        fi
+    done
+done
+
+# Liga/desliga o wallpaper parado do Caelestia (ele relê o shell.json na hora)
+fundo_parado() {
+    command -v jq >/dev/null || return 0
+    [[ -f "${SHELLJSON}" ]] || echo '{}' >"${SHELLJSON}"
+    local atual tmp
+    atual="$(jq -r 'if .background.wallpaperEnabled == false then "false" else "true" end' "${SHELLJSON}" 2>/dev/null)"
+    [[ "${atual}" == "$1" ]] && return 0
+    tmp="$(mktemp "${SHELLJSON}.XXXXXX")"
+    if jq --argjson v "$1" '.background.wallpaperEnabled = $v' "${SHELLJSON}" >"${tmp}"; then
+        mv "${tmp}" "${SHELLJSON}"
+    else
+        rm -f "${tmp}"
+    fi
+}
+
+pkill -x mpvpaper 2>/dev/null
+
+if [[ -n "${video}" && ! -e "${CONFIG}/akari/no-animated" ]] && command -v mpvpaper >/dev/null; then
+    # Primeiro o vídeo começa, depois o fundo parado sai (assim não pisca)
+    mpvpaper -f -p -o "no-audio loop hwdec=auto panscan=1.0 really-quiet" ALL "${video}"
+    sleep 0.8
+    fundo_parado false
+else
+    fundo_parado true
+fi

@@ -1,0 +1,41 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Akari · 花吹雪 Hanafubuki — tempestade de pétalas em pêssego (vídeo em loop) -->
+<style>
+  @font-face{font-family:"Fraktur";src:url("../../fonts/UnifrakturCook-Bold.woff2");font-weight:700}
+  html,body{margin:0;width:1920px;height:1080px;background:#140c0a;overflow:hidden}
+  .layer{position:absolute;inset:0}
+  #kanji{position:absolute;left:0;right:0;top:330px;text-align:center;font-family:"Noto Serif CJK JP";font-weight:900;font-size:300px;line-height:1;
+         color:transparent;-webkit-text-stroke:1.5px rgba(244,190,163,.35);letter-spacing:.35em;padding-left:.35em}
+  #word{position:absolute;left:0;right:0;top:150px;text-align:center;font-family:"Fraktur";font-weight:700;font-size:230px;color:#f3bea2;
+        text-shadow:0 0 60px rgba(243,170,135,.25)}
+  #flower{position:absolute;left:810px;top:420px;width:300px;height:300px}
+  #flower .corehalo{animation:respira 4s ease-in-out infinite}
+  #flower .halo{animation:respiraHalo 4s ease-in-out infinite}
+  #sub{position:absolute;left:0;right:0;top:820px;text-align:center;font-family:"Noto Serif CJK JP";font-size:20px;letter-spacing:.5em;color:rgba(244,190,163,.55)}
+</style>
+<script src="comum.js"></script>
+</head>
+<body>
+<svg class="layer" width="1920" height="1080">
+  <defs><radialGradient id="aura" cx="50%" cy="52%" r="45%"><stop offset="0" stop-color="#f4a882" stop-opacity=".16"/><stop offset="1" stop-color="#f4a882" stop-opacity="0"/></radialGradient></defs>
+  <rect width="1920" height="1080" fill="url(#aura)"/>
+  <rect x="60" y="48" width="1800" height="984" rx="20" fill="none" stroke="#f4bea3" stroke-opacity=".32" stroke-width="1.5" stroke-dasharray="13 9"/>
+</svg>
+<div id="atras" class="layer"></div>
+<div id="kanji">花吹雪</div>
+<div id="word">akari</div>
+<!--FLOR-PESSEGO-->
+<div id="sub">花びらに　灯りをともす　夜の風</div>
+<div id="frente" class="layer"></div>
+<svg class="layer" width="1920" height="1080" style="mix-blend-mode:screen;opacity:.07">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="1920" height="1080" filter="url(#n)"/>
+</svg>
+<svg class="layer" width="1920" height="1080"><defs><radialGradient id="vig" cx="50%" cy="50%" r="78%"><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".8"/></radialGradient></defs><rect width="1920" height="1080" fill="url(#vig)"/></svg>
+<script>
+  // Vento forte da esquerda para a direita: pétalas atrás (pequenas) e na frente (grandes, desfocadas)
+  petalas(document.getElementById("atras"), 60, { cor: "#f4bea3", dx: 1900, dy: 900, seed: 5, tamMin: 12, tamMax: 30 });
+  petalas(document.getElementById("frente"), 22, { cor: "#f6c9b1", dx: 2200, dy: 700, seed: 77, tamMin: 34, tamMax: 70 });
+</script>
+</body></html>

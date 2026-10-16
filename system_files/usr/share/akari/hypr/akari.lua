@@ -60,7 +60,13 @@ local function in_vm()
 end
 
 local home = os.getenv("HOME") or ""
-if in_vm() or read_file(home .. "/.config/akari/software-render") ~= "" or io.open(home .. "/.config/akari/software-render") then
+local function exists(path)
+    local f = io.open(path)
+    if f then f:close() return true end
+    return false
+end
+
+if in_vm() or exists(home .. "/.config/akari/software-render") then
     hl.env("LIBGL_ALWAYS_SOFTWARE", "1")
 end
 
@@ -75,6 +81,8 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("/usr/libexec/hyprpolkitagent")
     -- Localização para o modo noturno (gammastep)
     hl.exec_cmd("/usr/libexec/geoclue-2.0/demos/agent")
+    -- Wallpaper animado (se o escolhido for um dos animados)
+    hl.exec_cmd("sleep 2 && /usr/libexec/akari/akari-wallpaper-hook")
     -- Tarefas em segundo plano (ex.: instalar o JetBrains Toolbox)
     hl.exec_cmd("/usr/libexec/akari/akari-session-start")
 end)

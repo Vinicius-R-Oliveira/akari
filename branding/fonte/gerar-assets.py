@@ -27,7 +27,38 @@ FLOR_INLINE = re.sub(r"<svg [^>]*>", '<svg id="flower" xmlns="http://www.w3.org/
 PETAL = "M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z"
 ANGLES = [0, 72, 144, 216, 288]
 
-WALLS = {"akari-01-hanami": "hanami.html", "akari-02-yoru": "yoru.html", "akari-03-hanabira": "hanabira.html"}
+
+
+def flor_cor(cor: str) -> str:
+    """A mesma flor, recolorida (ex.: preta para fundos claros, pêssego)."""
+    out = FLOR_INLINE
+    for branco in ('"#fff"', '"#ffffff"', '"#fafafa"', '"#f2f2f2"'):
+        out = out.replace(branco, f'"{cor}"')
+    return out
+
+
+# Versões da flor que os HTML dos wallpapers podem usar
+FLORES = {
+    "<!--FLOR-->": FLOR_INLINE,
+    # Flor escura (fundos claros): a luz vira uma "mancha de tinta" bem leve
+    "<!--FLOR-ESCURA-->": flor_cor("#141414").replace('opacity=".55" filter="url(#bloomBig)"', 'opacity=".12" filter="url(#bloomBig)"')
+                                              .replace('stop-opacity=".32"', 'stop-opacity=".10"')
+                                              .replace('stop-color="#141414" stop-opacity=".7"', 'stop-color="#141414" stop-opacity=".22"'),
+    "<!--FLOR-PESSEGO-->": flor_cor("#f6c4a8"),
+    "<!--FLOR-MARROM-->": flor_cor("#5a3326"),
+}
+
+# Wallpapers: nome do arquivo → (HTML fonte, variante de cor do Caelestia, modo)
+# A variante/modo é o "tema" que o sistema aplica quando o wallpaper é escolhido.
+WALLS = {
+    "akari-01-hanami":    ("hanami.html", "monochrome", "dark"),
+    "akari-02-yoru":      ("yoru.html", "monochrome", "dark"),
+    "akari-03-hanabira":  ("hanabira.html", "monochrome", "dark"),
+    "akari-04-shiro":     ("shiro.html", "monochrome", "light"),
+    "akari-05-momo":      ("momo.html", "tonalspot", "dark"),
+    "akari-06-hi":        ("hi.html", "monochrome", "dark"),
+    "akari-07-makimono":  ("makimono.html", "monochrome", "dark"),
+}
 
 
 def shot(pg, html_path, out, w, h, transparent=False):
@@ -51,8 +82,16 @@ def main():
         pg = b.new_page()
 
         # ── Wallpapers ─────────────────────────────────────────
-        for name, src in WALLS.items():
-            html = (HERE / "wallpapers" / src).read_text().replace("<!--FLOR-->", FLOR_INLINE)
+        import json, sys
+        only = [a for a in sys.argv[1:] if not a.startswith("-")]
+        temas = {}
+        for name, (src, variant, mode) in WALLS.items():
+            temas[f"{name}.jpg"] = {"variant": variant, "mode": mode}
+            if only and name not in only:
+                continue
+            html = (HERE / "wallpapers" / src).read_text()
+            for marca, svg in FLORES.items():
+                html = html.replace(marca, svg)
             html = html.replace('url("../fonts/', f'url("{HERE}/fonts/')
             f = tmp / f"{name}.html"
             f.write_text(html)
@@ -60,6 +99,15 @@ def main():
             shot(pg, f, png, 3840, 2160)
             Image.open(png).convert("RGB").save(walls / f"{name}.jpg", quality=94, subsampling=0)
             print("wallpaper", name)
+        # Tema de cada wallpaper (lido pelo akari-user-setup)
+        # junta com o que já existe (os animados são escritos pelo gerar-animados.py)
+        tp = walls / "temas.json"
+        antigos = json.loads(tp.read_text()) if tp.exists() else {}
+        antigos.update(temas)
+        tp.write_text(json.dumps(antigos, indent=2, ensure_ascii=False) + "\n")
+        if "--so-wallpapers" in sys.argv:
+            b.close()
+            return
 
         # ── Fundo da Genkan/Hajime: wallpaper principal desfocado e escurecido
         base = Image.open(tmp / "akari-01-hanami.png").convert("RGB").resize((1920, 1080), Image.LANCZOS)

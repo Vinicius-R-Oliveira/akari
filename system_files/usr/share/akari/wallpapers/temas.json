@@ -1,0 +1,55 @@
+{
+  "akari-01-hanami.jpg": {
+    "variant": "monochrome",
+    "mode": "dark"
+  },
+  "akari-02-yoru.jpg": {
+    "variant": "monochrome",
+    "mode": "dark"
+  },
+  "akari-03-hanabira.jpg": {
+    "variant": "monochrome",
+    "mode": "dark"
+  },
+  "akari-04-shiro.jpg": {
+    "variant": "monochrome",
+    "mode": "light"
+  },
+  "akari-05-momo.jpg": {
+    "variant": "tonalspot",
+    "mode": "dark"
+  },
+  "akari-06-hi.jpg": {
+    "variant": "monochrome",
+    "mode": "dark"
+  },
+  "akari-07-makimono.jpg": {
+    "variant": "monochrome",
+    "mode": "dark"
+  },
+  "akari-08-hanami-ugoki.jpg": {
+    "variant": "monochrome",
+    "mode": "dark",
+    "video": "animados/akari-08-hanami-ugoki.mp4"
+  },
+  "akari-09-yozakura.jpg": {
+    "variant": "monochrome",
+    "mode": "dark",
+    "video": "animados/akari-09-yozakura.mp4"
+  },
+  "akari-10-ame.jpg": {
+    "variant": "monochrome",
+    "mode": "dark",
+    "video": "animados/akari-10-ame.mp4"
+  },
+  "akari-11-mangetsu.jpg": {
+    "variant": "monochrome",
+    "mode": "dark",
+    "video": "animados/akari-11-mangetsu.mp4"
+  },
+  "akari-12-fubuki.jpg": {
+    "variant": "tonalspot",
+    "mode": "dark",
+    "video": "animados/akari-12-fubuki.mp4"
+  }
+}

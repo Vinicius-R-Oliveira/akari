@@ -1,0 +1,48 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Akari · 雨 Ame — chuva de kanji (estilo "matrix" do terminal do vídeo) com a flor no centro (vídeo em loop) -->
+<style>
+  @font-face{font-family:"Fraktur";src:url("../../fonts/UnifrakturCook-Bold.woff2");font-weight:700}
+  html,body{margin:0;width:1920px;height:1080px;background:#030303;overflow:hidden}
+  .layer{position:absolute;inset:0}
+  #chuva{position:absolute;inset:0;display:flex;justify-content:space-between;padding:0 6px}
+  .coluna{position:relative;width:26px;height:1080px}
+  .coluna span{position:absolute;left:0;top:0;width:26px;writing-mode:vertical-rl;font-family:"Noto Serif CJK JP";font-size:22px;line-height:26px;
+               letter-spacing:6px;white-space:nowrap}
+  .base{color:rgba(255,255,255,.07)}
+  .luz{color:#f4f4f4;text-shadow:0 0 8px rgba(255,255,255,.7);
+       -webkit-mask-image:linear-gradient(to bottom,transparent 0%,transparent 30%,rgba(0,0,0,.15) 42%,rgba(0,0,0,.6) 47%,#000 49.5%,transparent 50.5%,transparent 100%);
+       -webkit-mask-size:100% 300%;-webkit-mask-repeat:no-repeat;animation:desce linear infinite}
+  @keyframes desce{from{-webkit-mask-position:0 100%}to{-webkit-mask-position:0 0%}}
+  #painel{position:absolute;left:660px;top:290px;width:600px;height:500px;border-radius:40px;background:rgba(3,3,3,.86);
+          box-shadow:0 0 0 1.5px rgba(255,255,255,.18),0 0 120px 60px rgba(3,3,3,.9)}
+  #flower{position:absolute;left:820px;top:320px;width:280px;height:280px}
+  #flower .corehalo{animation:respira 4s ease-in-out infinite}
+  #flower .halo{animation:respiraHalo 4s ease-in-out infinite}
+  #word{position:absolute;left:0;right:0;top:600px;text-align:center;font-family:"Fraktur";font-weight:700;font-size:110px;color:#ededed}
+  #sub{position:absolute;left:0;right:0;top:735px;text-align:center;font-family:"DejaVu Sans Mono";font-size:12px;letter-spacing:.5em;color:rgba(255,255,255,.4)}
+</style>
+<script src="comum.js"></script>
+</head>
+<body>
+<div id="chuva"></div>
+<div id="painel"></div>
+<!--FLOR-->
+<div id="word">akari</div>
+<div id="sub">AME · 雨 · AKR—010</div>
+<svg class="layer" width="1920" height="1080"><defs><radialGradient id="vig" cx="50%" cy="50%" r="75%"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".8"/></radialGradient></defs><rect width="1920" height="1080" fill="url(#vig)"/></svg>
+<script>
+  const r = semente(23);
+  const glifos = "灯花光夜雨風月星空雪桜火水木心夢春秋海森音影静時道明暗白黒朝あかりはなひかりよるそらゆめアカリハナヒカリ一二三四五六七八九十";
+  const periodos = [LOOP / 2, LOOP / 4, LOOP / 4, LOOP / 8];
+  let html = "";
+  for (let c = 0; c < 66; c++) {
+    let txt = "";
+    for (let i = 0; i < 46; i++) txt += glifos[Math.floor(r() * glifos.length)];
+    const per = periodos[Math.floor(r() * periodos.length)];
+    html += `<div class="coluna"><span class="base">${txt}</span>
+      <span class="luz" style="animation-duration:${per}s;animation-delay:${-(r() * per).toFixed(2)}s">${txt}</span></div>`;
+  }
+  document.getElementById("chuva").innerHTML = html;
+</script>
+</body></html>

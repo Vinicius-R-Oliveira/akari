@@ -57,7 +57,8 @@ A Akari é uma **imagem de sistema** (igual à Bazzite). O GitHub Actions monta 
 ### 3. Gerar a ISO
 
 1. Em *Actions*, abra **"Akari · gerar ISO e imagem de VM"** → **Run workflow** (plataforma `amd64`).
-2. Baixe o artefato `anaconda-iso`, que contém o `install.iso`. O artefato `qcow2` é uma imagem pronta para máquina virtual.
+2. Baixe a ISO no Release **iso-latest** (vem em partes: baixe todas e rode o `juntar-iso`). O artefato `qcow2` é uma imagem pronta para máquina virtual.
+3. **Instalador personalizado (experimental):** no mesmo workflow, escolha `instalador: personalizado`. Sai no Release **iso-personalizado**: o instalador já abre em português/Brasil (teclado ABNT2, fuso de São Paulo) e com o visual preto e branco da Akari. O visual é gerado por `branding/fonte/gerar-instalador.py`.
 
 ### 4. Testar numa VM antes (recomendado)
 
@@ -82,7 +83,7 @@ Use o GNOME Boxes, o virt-manager ou o VirtualBox com **UEFI**, **4 GB+ de RAM**
 Na primeira vez que você entra, a Akari:
 
 - copia os configs do Caelestia (Hyprland, fish, fastfetch, btop) para a sua pasta;
-- coloca os 3 wallpapers da Akari em `Imagens/Wallpapers` e aplica o principal com as cores em preto e branco;
+- coloca os 12 wallpapers da Akari em `Imagens/Wallpapers` (7 parados + 5 animados) e aplica o principal com as cores em preto e branco;
 - instala o **Heroic** (Flatpak) em segundo plano, assim que houver internet;
 - baixa o **JetBrains Toolbox**. Abra pelo launcher para instalar IntelliJ, PyCharm, WebStorm etc.
 
@@ -115,7 +116,9 @@ A lista completa está no [README do Caelestia](https://github.com/caelestia-dot
 | Apps padrão, atalhos, blur, bordas | `~/.config/caelestia/hypr-vars.lua` |
 | Monitores, regras de janela, atalhos extras | `~/.config/caelestia/hypr-user.lua` |
 | Barra, launcher, transparência, visualizador | `~/.config/caelestia/shell.json` (ou o painel de configurações do Caelestia) |
-| Wallpapers | coloque imagens em `Imagens/Wallpapers` e troque pelo launcher (`>wallpaper`) |
+| Wallpapers | coloque imagens em `Imagens/Wallpapers` e troque pelo launcher (`>wallpaper`). Cada wallpaper da Akari já muda o tema inteiro (claro/escuro, preto e branco ou pêssego) |
+| Wallpapers animados | escolha os de capa 08 a 12 (Hanami Ugoki, Yozakura, Ame, Mangetsu, Fubuki). Para usar um vídeo seu: ponha `nome.mp4` em `Imagens/Wallpapers/animados/` junto de uma imagem `nome.jpg` em `Imagens/Wallpapers` e escolha a imagem |
+| Desligar os animados (economiza bateria) | `touch ~/.config/akari/no-animated` e escolha o wallpaper de novo |
 | Cores coloridas em vez de preto e branco | launcher → `>variant` (ex.: *tonalspot*, *vibrant*) |
 | Desligar a transição Hajime | `touch ~/.config/akari/no-hajime` |
 | Não instalar o JetBrains Toolbox | `touch ~/.config/akari/no-jetbrains` |
@@ -160,6 +163,7 @@ python3 branding/fonte/gerar-assets.py   # PNGs, wallpapers, fundo do login, qua
 ```
 
 Os wallpapers são páginas HTML em `branding/fonte/wallpapers/`. Mude o texto, as posições e as pétalas e gere de novo.
+Os animados ficam em `branding/fonte/wallpapers/animados/` e viram vídeo com `python3 branding/fonte/gerar-animados.py` (precisa do `ffmpeg`). O tema de cada wallpaper fica em `system_files/usr/share/akari/wallpapers/temas.json`.
 
 ### Testar a Ichiba fora da Akari
 

@@ -34,7 +34,7 @@ want \
     qt6-qtimageformats qt6-qtsvg qt6-qtmultimedia qt6-qtwayland \
     swappy grim slurp wl-clipboard cliphist fuzzel trash-cli \
     gammastep geoclue2 gnome-keyring playerctl ydotool \
-    xdg-user-dirs xdg-utils jq libnotify \
+    xdg-user-dirs xdg-utils jq libnotify mpv mpvpaper \
     material-symbols-fonts rubik-fonts cascadia-code-nerd-fonts
 
 # Perfis de energia (o Fedora usa o tuned-ppd, que fala a mesma API)
