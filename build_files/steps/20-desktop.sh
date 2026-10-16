@@ -37,6 +37,12 @@ want \
     xdg-user-dirs xdg-utils jq libnotify mpv mpvpaper \
     material-symbols-fonts rubik-fonts cascadia-code-nerd-fonts
 
+log "Firmware e drivers para notebook (Wi-Fi, GPU AMD, áudio, Bluetooth)"
+# A base já traz a maioria; aqui só garante (o que já existe é ignorado)
+want linux-firmware amd-gpu-firmware amd-ucode-firmware \
+    iwlwifi-mvm-firmware realtek-firmware mt7xxx-firmware atheros-firmware brcmfmac-firmware \
+    alsa-sof-firmware mesa-vulkan-drivers mesa-dri-drivers fwupd
+
 # Perfis de energia (o Fedora usa o tuned-ppd, que fala a mesma API)
 if ! rpm -q tuned-ppd >/dev/null && ! rpm -q power-profiles-daemon >/dev/null; then
     want tuned-ppd || want power-profiles-daemon

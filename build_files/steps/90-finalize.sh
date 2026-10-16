@@ -23,6 +23,9 @@ export DRACUT_NO_XATTR=1
 chmod 0600 "/lib/modules/${KERNEL_VERSION}/initramfs.img"
 
 # Relatório: avisa no GitHub (anotação) se algum pacote importante ficou de fora
-for p in hyprland quickshell-git caelestia-shell mpvpaper mpv kitty dolphin firefox code steam sddm; do
-    rpm -q "$p" >/dev/null 2>&1 && echo "::notice title=Pacote ok::$p" || echo "::warning title=Pacote faltando::$p"
+ok=""
+for p in hyprland quickshell-git caelestia-shell mpvpaper mpv kitty dolphin firefox code steam sddm \
+         linux-firmware amd-gpu-firmware mesa-vulkan-drivers NetworkManager-wifi bluez pipewire tuned-ppd; do
+    if rpm -q "$p" >/dev/null 2>&1; then ok="${ok} ${p}"; else echo "::warning title=Pacote faltando::$p"; fi
 done
+echo "::notice title=Pacotes ok::${ok}"
