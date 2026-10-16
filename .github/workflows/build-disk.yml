@@ -111,6 +111,9 @@ jobs:
           REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
+          trap 'echo "::error title=Release da ISO::falhou na linha ${LINENO}: ${BASH_COMMAND}"' ERR
+          echo "::notice title=Espaço antes::$(df -h / | tail -1)"
+          echo "::notice title=Saída do builder::OUT=${OUT} :: $(sudo find "${OUT}" -maxdepth 3 | head -20 | tr '\n' ' ')"
           df -h /
           # Libera espaço: as imagens de container usadas na montagem não são mais necessárias
           sudo podman system prune -af >/dev/null 2>&1 || true
@@ -130,6 +133,7 @@ jobs:
           printf '@echo off\r\necho Juntando as partes da ISO da Akari...\r\ncopy /b %s akari-install.iso\r\necho Pronto: akari-install.iso\r\npause\r\n' "${parts}" > juntar-iso-windows.bat
           printf '#!/bin/sh\ncat akari-install.iso.0* > akari-install.iso && sha256sum -c akari-install.iso.sha256\n' > juntar-iso-linux.sh
           ls -la
+          echo "::notice title=Partes::$(ls -la | tr '\n' ' ')"
           TAG=iso-latest
           if ! gh release view "${TAG}" -R "${REPO}" >/dev/null 2>&1; then
             gh release create "${TAG}" -R "${REPO}" --title "Akari · ISO de instalação" \
