@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Akari
+Comment=Hyprland + Caelestia, do jeito da Akari
+Exec=/usr/bin/akari-session
+Type=Application
+DesktopNames=Hyprland

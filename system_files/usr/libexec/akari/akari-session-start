@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Tarefas que rodam em segundo plano depois que o desktop abre.
+
+# Espera a transição (Hajime) terminar para não disputar recursos
+sleep 12
+
+# JetBrains Toolbox: instala na primeira vez (ele mesmo instala as IDEs depois)
+if [[ ! -e "${XDG_CONFIG_HOME:-$HOME/.config}/akari/no-jetbrains" ]]; then
+    /usr/bin/akari-jetbrains-toolbox --install-only --quiet &
+fi
+
+wait
+
+# Quando o Toolbox cria o próprio atalho, esconde o da Akari para não duplicar
+APPS="${XDG_DATA_HOME:-$HOME/.local/share}/applications"
+if [[ -e "${APPS}/jetbrains-toolbox.desktop" && ! -e "${APPS}/akari-jetbrains-toolbox.desktop" ]]; then
+    mkdir -p "${APPS}"
+    printf '[Desktop Entry]\nType=Application\nName=JetBrains Toolbox\nNoDisplay=true\n' >"${APPS}/akari-jetbrains-toolbox.desktop"
+fi

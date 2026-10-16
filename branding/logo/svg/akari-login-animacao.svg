@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 330" width="800" height="660" style="background:#000">
+  <title>Akari — animação do login</title>
+  <defs>
+    <radialGradient id="halo" cx="0" cy="0" r="98" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff" stop-opacity=".32"/>
+      <stop offset=".45" stop-color="#fff" stop-opacity=".08"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="paper" cx="0" cy="0" r="78" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff" stop-opacity=".7"/>
+      <stop offset=".3" stop-color="#f2f2f2" stop-opacity=".3"/>
+      <stop offset=".7" stop-color="#bdbdbd" stop-opacity=".08"/>
+      <stop offset="1" stop-color="#8a8a8a" stop-opacity=".04"/>
+    </radialGradient>
+    <radialGradient id="core" cx="0" cy="0" r="12" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset=".7" stop-color="#fafafa"/>
+      <stop offset="1" stop-color="#d9d9d9"/>
+    </radialGradient>
+    <filter id="bloom" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3.2"/>
+    </filter>
+    <filter id="bloomBig" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+  </defs>
+  <style>
+    /* 0.0s pétalas se desenham → 1.6s nervuras → 2.2s acende o centro → 2.6s a luz enche as pétalas → 3.2s nome → loop respirando */
+    .ol, .bl { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 1.4s cubic-bezier(.6,.05,.3,1) forwards; }
+    .p0{animation-delay:.10s}.p1{animation-delay:.28s}.p2{animation-delay:.46s}.p3{animation-delay:.64s}.p4{animation-delay:.82s}
+    .vein { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw .9s ease-out forwards; }
+    .v0{animation-delay:1.55s}.v1{animation-delay:1.65s}.v2{animation-delay:1.75s}.v3{animation-delay:1.85s}.v4{animation-delay:1.95s}
+    .stamen { opacity: 0; animation: fade .6s ease-out forwards; animation-delay: 2.2s; }
+    .core { transform: scale(0); animation: pop .7s cubic-bezier(.3,1.6,.5,1) forwards 2.15s; }
+    .corehalo { opacity: 0; animation: ignite 1.2s ease-out forwards 2.25s, breathe 4s ease-in-out infinite 3.6s; }
+    .glowfill, .halo { opacity: 0; animation: fill 1.6s ease-out forwards 2.5s; }
+    .bloom { opacity: 0; animation: fill 1.2s ease-out forwards .9s; }
+    .word { opacity: 0; animation: word 1.4s ease-out forwards 3.1s; }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+    @keyframes fade { to { opacity: 1; } }
+    @keyframes pop { to { transform: scale(1); } }
+    @keyframes ignite { 0%{opacity:0} 40%{opacity:1} 100%{opacity:.55} }
+    @keyframes fill { to { opacity: 1; } }
+    @keyframes breathe { 0%,100%{opacity:.55} 50%{opacity:.9} }
+    @keyframes word { from { opacity: 0; transform: translateY(8px); letter-spacing: 0 } to { opacity: 1; transform: translateY(0) } }
+  </style>
+  <rect width="400" height="330" fill="#000"/>
+  <g transform="translate(100 10)">
+    <g transform="translate(100 102)">
+      <circle class="halo" r="98" fill="url(#halo)"/>
+      <g class="glowfill" opacity="1">
+      <path class="fill p0" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(0)" fill="url(#paper)" stroke="none" stroke-width="0" stroke-linejoin="round" />
+      <path class="fill p1" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(72)" fill="url(#paper)" stroke="none" stroke-width="0" stroke-linejoin="round" />
+      <path class="fill p2" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(144)" fill="url(#paper)" stroke="none" stroke-width="0" stroke-linejoin="round" />
+      <path class="fill p3" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(216)" fill="url(#paper)" stroke="none" stroke-width="0" stroke-linejoin="round" />
+      <path class="fill p4" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(288)" fill="url(#paper)" stroke="none" stroke-width="0" stroke-linejoin="round" />
+      </g>
+      <g class="bloom" filter="url(#bloom)" opacity=".6">
+      <path class="bl p0" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(0)" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round" pathLength="1"/>
+      <path class="bl p1" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(72)" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round" pathLength="1"/>
+      <path class="bl p2" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(144)" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round" pathLength="1"/>
+      <path class="bl p3" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(216)" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round" pathLength="1"/>
+      <path class="bl p4" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(288)" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round" pathLength="1"/>
+      </g>
+      <g class="lines">
+      <path class="ol p0" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(0)" fill="none" stroke="#fff" stroke-width="4.6" stroke-linejoin="round" pathLength="1"/>
+      <path class="ol p1" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(72)" fill="none" stroke="#fff" stroke-width="4.6" stroke-linejoin="round" pathLength="1"/>
+      <path class="ol p2" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(144)" fill="none" stroke="#fff" stroke-width="4.6" stroke-linejoin="round" pathLength="1"/>
+      <path class="ol p3" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(216)" fill="none" stroke="#fff" stroke-width="4.6" stroke-linejoin="round" pathLength="1"/>
+      <path class="ol p4" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(288)" fill="none" stroke="#fff" stroke-width="4.6" stroke-linejoin="round" pathLength="1"/>
+      </g>
+      <circle class="corehalo" r="26" fill="#fff" opacity=".55" filter="url(#bloomBig)"/>
+      <circle class="core" r="10" fill="url(#core)"/>
+    </g></g>
+  <g class="word"><path d="M14.53125 0.78125C20.21875 0.78125 23.8125 -2.3125 25.34375 -5.53125H25.65625V0.0H29.8125V-23.71875C29.8125 -32.96875 22.78125 -35.40625 17.3125 -35.40625C11.875 -35.40625 6.375 -33.1875 4.03125 -27.53125L8.09375 -26.15625C9.3125 -29.0625 12.40625 -31.625 17.40625 -31.625C22.625 -31.625 25.59375 -28.78125 25.59375 -24.09375V-23.28125C25.59375 -20.625 22.25 -20.5625 16.46875 -19.875C8.59375 -18.90625 3.03125 -16.6875 3.03125 -9.78125C3.03125 -3.0 8.1875 0.78125 14.53125 0.78125ZM15.15625 -3.0C10.625 -3.0 7.28125 -5.40625 7.28125 -9.59375C7.28125 -13.71875 10.65625 -15.53125 16.5 -16.25C19.28125 -16.59375 24.375 -17.21875 25.59375 -18.375V-13.40625C25.59375 -7.71875 21.5 -3.0 15.15625 -3.0Z M59.7 0.0H63.95V-13.40625L67.91875 -17.15625L81.41875 0.0H86.85625L71.10625 -19.90625L85.95 -34.9375H80.60625L64.45 -18.5625H63.95V-46.5625H59.7Z M121.9 0.78125C127.5875 0.78125 131.18125 -2.3125 132.7125 -5.53125H133.025V0.0H137.18125V-23.71875C137.18125 -32.96875 130.15 -35.40625 124.68125 -35.40625C119.24375 -35.40625 113.74375 -33.1875 111.4 -27.53125L115.4625 -26.15625C116.68125 -29.0625 119.775 -31.625 124.775 -31.625C129.99375 -31.625 132.9625 -28.78125 132.9625 -24.09375V-23.28125C132.9625 -20.625 129.61875 -20.5625 123.8375 -19.875C115.9625 -18.90625 110.4 -16.6875 110.4 -9.78125C110.4 -3.0 115.55625 0.78125 121.9 0.78125ZM122.525 -3.0C117.99375 -3.0 114.65 -5.40625 114.65 -9.59375C114.65 -13.71875 118.025 -15.53125 123.86875 -16.25C126.65 -16.59375 131.74375 -17.21875 132.9625 -18.375V-13.40625C132.9625 -7.71875 128.86875 -3.0 122.525 -3.0Z M167.06875000000002 0.0H171.31875000000002V-22.40625C171.31875000000002 -27.5625 175.25625000000002 -31.3125 180.66250000000002 -31.3125C181.78750000000002 -31.3125 182.85000000000002 -31.15625 183.16250000000002 -31.09375V-35.34375C182.60000000000002 -35.375 181.69375000000002 -35.40625 181.00625000000002 -35.40625C176.66250000000002 -35.40625 172.91250000000002 -33.0625 171.50625000000002 -29.5H171.19375000000002V-34.9375H167.06875000000002Z M209.26875 0.0H213.51875V-34.9375H209.26875ZM211.39375 -41.40625C213.1125 -41.40625 214.51875 -42.71875 214.51875 -44.375C214.51875 -46.03125 213.1125 -47.34375 211.39375 -47.34375C209.70625 -47.34375 208.3 -46.03125 208.3 -44.375C208.3 -42.71875 209.70625 -41.40625 211.39375 -41.40625Z" transform="translate(139.8 278) scale(.55)" fill="#fff"/></g>
+</svg>

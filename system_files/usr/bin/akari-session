@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Sessão Akari: prepara a conta do usuário e inicia o Hyprland.
+# É o que a Genkan (tela de login) executa ao entrar.
+
+export AKARI_SESSION=1
+export XDG_CURRENT_DESKTOP=Hyprland
+export XDG_SESSION_DESKTOP=Hyprland
+
+# Configs padrão na primeira vez (e migrações depois de atualizar o sistema)
+/usr/libexec/akari/akari-user-setup >"${XDG_RUNTIME_DIR:-/tmp}/akari-user-setup.log" 2>&1 || true
+
+# Pastas do usuário no idioma do sistema (ex.: ~/Imagens) para o Caelestia achar
+# os wallpapers, capturas de tela e gravações
+if command -v xdg-user-dir >/dev/null 2>&1; then
+    XDG_PICTURES_DIR="$(xdg-user-dir PICTURES)"
+    XDG_VIDEOS_DIR="$(xdg-user-dir VIDEOS)"
+    export XDG_PICTURES_DIR XDG_VIDEOS_DIR
+fi
+
+if command -v start-hyprland >/dev/null 2>&1; then
+    exec start-hyprland
+fi
+exec Hyprland

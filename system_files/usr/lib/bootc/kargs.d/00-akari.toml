@@ -1,0 +1,2 @@
+# Parâmetros do kernel: animação de boot (Plymouth) sem texto na tela
+kargs = ["rhgb", "quiet", "splash"]

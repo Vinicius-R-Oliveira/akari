@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=Akari
+Description=A flor de luz da Akari se desenhando no boot
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/akari
+ScriptFile=/usr/share/plymouth/themes/akari/akari.script

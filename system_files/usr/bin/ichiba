@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Ichiba 市場 — a loja de apps da Akari
+exec python3 /usr/lib/akari/ichiba/ichiba.py "$@"

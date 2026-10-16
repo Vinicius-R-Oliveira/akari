@@ -1,0 +1,5 @@
+# Flatpaks instalados no primeiro boot (um ID do Flathub por linha).
+# Adicione ou remova à vontade: na próxima atualização a lista é aplicada de novo.
+
+# Epic Games, GOG e Amazon Games
+com.heroicgameslauncher.hgl

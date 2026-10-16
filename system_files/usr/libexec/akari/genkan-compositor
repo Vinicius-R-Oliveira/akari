@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Compositor da tela de login (Genkan): Weston em modo quiosque,
+# com o layout de teclado escolhido na instalação (ex.: br/abnt2).
+
+layout="" variant=""
+kb=/etc/X11/xorg.conf.d/00-keyboard.conf
+if [[ -r "${kb}" ]]; then
+    layout="$(sed -n 's/.*"XkbLayout"[[:space:]]*"\([^"]*\)".*/\1/p' "${kb}" | head -n1)"
+    variant="$(sed -n 's/.*"XkbVariant"[[:space:]]*"\([^"]*\)".*/\1/p' "${kb}" | head -n1)"
+fi
+if [[ -z "${layout}" && -r /etc/vconsole.conf ]]; then
+    km="$(sed -n 's/^KEYMAP="\{0,1\}\([^"]*\)"\{0,1\}/\1/p' /etc/vconsole.conf)"
+    case "${km}" in
+    br | br-abnt2) layout=br variant=abnt2 ;;
+    ?*) layout="${km%%-*}" ;;
+    esac
+fi
+layout="${layout:-us}"
+
+cfg="${XDG_RUNTIME_DIR:-/tmp}/akari-genkan-weston.ini"
+cat >"${cfg}" <<EOF
+[core]
+idle-time=0
+
+[keyboard]
+keymap_layout=${layout}
+keymap_variant=${variant}
+
+[shell]
+cursor-theme=Bibata-Modern-Ice
+cursor-size=24
+EOF
+
+export XCURSOR_THEME=Bibata-Modern-Ice
+export XCURSOR_SIZE=24
+exec weston --shell=kiosk --config="${cfg}" "$@"

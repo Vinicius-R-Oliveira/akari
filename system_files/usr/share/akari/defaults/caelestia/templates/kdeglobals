@@ -1,0 +1,161 @@
+# Gerado pela Akari a partir das cores do Caelestia.
+# Este arquivo é o template; o resultado fica em ~/.local/state/caelestia/theme/kdeglobals
+# e ~/.config/kdeglobals aponta para ele (Dolphin e outros apps KDE leem daqui).
+[ColorEffects:Disabled]
+Color={{ surfaceContainer.red }},{{ surfaceContainer.green }},{{ surfaceContainer.blue }}
+ColorAmount=0.5
+ColorEffect=3
+ContrastAmount=0
+ContrastEffect=0
+IntensityAmount=0
+IntensityEffect=0
+
+[ColorEffects:Inactive]
+ChangeSelectionColor=true
+Color={{ surfaceContainerLowest.red }},{{ surfaceContainerLowest.green }},{{ surfaceContainerLowest.blue }}
+ColorAmount=0.025
+ColorEffect=0
+ContrastAmount=0.1
+ContrastEffect=0
+Enable=true
+IntensityAmount=0
+IntensityEffect=0
+
+[Colors:Button]
+BackgroundAlternate={{ surfaceVariant.red }},{{ surfaceVariant.green }},{{ surfaceVariant.blue }}
+BackgroundNormal={{ surfaceContainerHigh.red }},{{ surfaceContainerHigh.green }},{{ surfaceContainerHigh.blue }}
+DecorationFocus={{ primary.red }},{{ primary.green }},{{ primary.blue }}
+DecorationHover={{ primary.red }},{{ primary.green }},{{ primary.blue }}
+ForegroundActive={{ onSurface.red }},{{ onSurface.green }},{{ onSurface.blue }}
+ForegroundInactive={{ outline.red }},{{ outline.green }},{{ outline.blue }}
+ForegroundLink={{ klink.red }},{{ klink.green }},{{ klink.blue }}
+ForegroundNegative={{ knegative.red }},{{ knegative.green }},{{ knegative.blue }}
+ForegroundNeutral={{ kneutral.red }},{{ kneutral.green }},{{ kneutral.blue }}
+ForegroundNormal={{ onSurface.red }},{{ onSurface.green }},{{ onSurface.blue }}
+ForegroundPositive={{ kpositive.red }},{{ kpositive.green }},{{ kpositive.blue }}
+ForegroundVisited={{ kvisited.red }},{{ kvisited.green }},{{ kvisited.blue }}
+
+[Colors:Complementary]
+BackgroundAlternate={{ surface.red }},{{ surface.green }},{{ surface.blue }}
+BackgroundNormal={{ surfaceContainer.red }},{{ surfaceContainer.green }},{{ surfaceContainer.blue }}
+DecorationFocus={{ primary.red }},{{ primary.green }},{{ primary.blue }}
+DecorationHover={{ primary.red }},{{ primary.green }},{{ primary.blue }}
+ForegroundActive={{ inverseSurface.red }},{{ inverseSurface.green }},{{ inverseSurface.blue }}
+ForegroundInactive={{ outline.red }},{{ outline.green }},{{ outline.blue }}
+ForegroundLink={{ klink.red }},{{ klink.green }},{{ klink.blue }}
+ForegroundNegative={{ knegative.red }},{{ knegative.green }},{{ knegative.blue }}
+ForegroundNeutral={{ kneutral.red }},{{ kneutral.green }},{{ kneutral.blue }}
+ForegroundNormal={{ onSurfaceVariant.red }},{{ onSurfaceVariant.green }},{{ onSurfaceVariant.blue }}
+ForegroundPositive={{ kpositive.red }},{{ kpositive.green }},{{ kpositive.blue }}
+ForegroundVisited={{ kvisited.red }},{{ kvisited.green }},{{ kvisited.blue }}
+
+[Colors:Header]
+BackgroundAlternate={{ surfaceContainer.red }},{{ surfaceContainer.green }},{{ surfaceContainer.blue }}
+BackgroundNormal={{ surfaceContainer.red }},{{ surfaceContainer.green }},{{ surfaceContainer.blue }}
+DecorationFocus={{ primary.red }},{{ primary.green }},{{ primary.blue }}
+DecorationHover={{ primary.red }},{{ primary.green }},{{ primary.blue }}
+ForegroundActive={{ inverseSurface.red }},{{ inverseSurface.green }},{{ inverseSurface.blue }}
+ForegroundInactive={{ outline.red }},{{ outline.green }},{{ outline.blue }}
+ForegroundLink={{ klink.red }},{{ klink.green }},{{ klink.blue }}
+ForegroundNegative={{ knegative.red }},{{ knegative.green }},{{ knegative.blue }}
+ForegroundNeutral={{ kneutral.red }},{{ kneutral.green }},{{ kneutral.blue }}
+ForegroundNormal={{ onSurfaceVariant.red }},{{ onSurfaceVariant.green }},{{ onSurfaceVariant.blue }}
+ForegroundPositive={{ kpositive.red }},{{ kpositive.green }},{{ kpositive.blue }}
+ForegroundVisited={{ kvisited.red }},{{ kvisited.green }},{{ kvisited.blue }}
+
+[Colors:Header][Inactive]
+BackgroundAlternate={{ surfaceContainer.red }},{{ surfaceContainer.green }},{{ surfaceContainer.blue }}
+BackgroundNormal={{ surfaceContainer.red }},{{ surfaceContainer.green }},{{ surfaceContainer.blue }}
+DecorationFocus={{ primary.red }},{{ primary.green }},{{ primary.blue }}
+DecorationHover={{ primary.red }},{{ primary.green }},{{ primary.blue }}
+ForegroundActive={{ inverseSurface.red }},{{ inverseSurface.green }},{{ inverseSurface.blue }}
+ForegroundInactive={{ outline.red }},{{ outline.green }},{{ outline.blue }}
+ForegroundLink={{ klink.red }},{{ klink.green }},{{ klink.blue }}
+ForegroundNegative={{ knegative.red }},{{ knegative.green }},{{ knegative.blue }}
+ForegroundNeutral={{ kneutral.red }},{{ kneutral.green }},{{ kneutral.blue }}
+ForegroundNormal={{ onSurfaceVariant.red }},{{ onSurfaceVariant.green }},{{ onSurfaceVariant.blue }}
+ForegroundPositive={{ kpositive.red }},{{ kpositive.green }},{{ kpositive.blue }}
+ForegroundVisited={{ kvisited.red }},{{ kvisited.green }},{{ kvisited.blue }}
+
+[Colors:Selection]
+BackgroundAlternate={{ primary.red }},{{ primary.green }},{{ primary.blue }}
+BackgroundNormal={{ primary.red }},{{ primary.green }},{{ primary.blue }}
+DecorationFocus={{ primary.red }},{{ primary.green }},{{ primary.blue }}
+DecorationHover={{ secondary.red }},{{ secondary.green }},{{ secondary.blue }}
+ForegroundActive={{ onPrimary.red }},{{ onPrimary.green }},{{ onPrimary.blue }}
+ForegroundInactive={{ onPrimary.red }},{{ onPrimary.green }},{{ onPrimary.blue }}
+ForegroundLink={{ klinkSelection.red }},{{ klinkSelection.green }},{{ klinkSelection.blue }}
+ForegroundNegative={{ knegativeSelection.red }},{{ knegativeSelection.green }},{{ knegativeSelection.blue }}
+ForegroundNeutral={{ kneutralSelection.red }},{{ kneutralSelection.green }},{{ kneutralSelection.blue }}
+ForegroundNormal={{ onPrimary.red }},{{ onPrimary.green }},{{ onPrimary.blue }}
+ForegroundPositive={{ kpositiveSelection.red }},{{ kpositiveSelection.green }},{{ kpositiveSelection.blue }}
+ForegroundVisited={{ kvisitedSelection.red }},{{ kvisitedSelection.green }},{{ kvisitedSelection.blue }}
+
+[Colors:Tooltip]
+BackgroundAlternate={{ surfaceVariant.red }},{{ surfaceVariant.green }},{{ surfaceVariant.blue }}
+BackgroundNormal={{ surfaceContainer.red }},{{ surfaceContainer.green }},{{ surfaceContainer.blue }}
+DecorationFocus={{ primary.red }},{{ primary.green }},{{ primary.blue }}
+DecorationHover={{ primary.red }},{{ primary.green }},{{ primary.blue }}
+ForegroundActive={{ onSurface.red }},{{ onSurface.green }},{{ onSurface.blue }}
+ForegroundInactive={{ outline.red }},{{ outline.green }},{{ outline.blue }}
+ForegroundLink={{ klink.red }},{{ klink.green }},{{ klink.blue }}
+ForegroundNegative={{ knegative.red }},{{ knegative.green }},{{ knegative.blue }}
+ForegroundNeutral={{ kneutral.red }},{{ kneutral.green }},{{ kneutral.blue }}
+ForegroundNormal={{ onSurface.red }},{{ onSurface.green }},{{ onSurface.blue }}
+ForegroundPositive={{ kpositive.red }},{{ kpositive.green }},{{ kpositive.blue }}
+ForegroundVisited={{ kvisited.red }},{{ kvisited.green }},{{ kvisited.blue }}
+
+[Colors:View]
+BackgroundAlternate={{ surfaceContainer.red }},{{ surfaceContainer.green }},{{ surfaceContainer.blue }}
+BackgroundNormal={{ surfaceDim.red }},{{ surfaceDim.green }},{{ surfaceDim.blue }}
+DecorationFocus={{ primary.red }},{{ primary.green }},{{ primary.blue }}
+#-----------------------------------------------
+DecorationHover={{ inversePrimary.red }},{{ inversePrimary.green }},{{ inversePrimary.blue }}
+ForegroundActive={{ inverseSurface.red }},{{ inverseSurface.green }},{{ inverseSurface.blue }}
+ForegroundInactive={{ outline.red }},{{ outline.green }},{{ outline.blue }}
+ForegroundLink={{ klink.red }},{{ klink.green }},{{ klink.blue }}
+ForegroundNegative={{ knegative.red }},{{ knegative.green }},{{ knegative.blue }}
+ForegroundNeutral={{ kneutral.red }},{{ kneutral.green }},{{ kneutral.blue }}
+ForegroundNormal={{ onSurface.red }},{{ onSurface.green }},{{ onSurface.blue }}
+ForegroundPositive={{ kpositive.red }},{{ kpositive.green }},{{ kpositive.blue }}
+ForegroundVisited={{ kvisited.red }},{{ kvisited.green }},{{ kvisited.blue }}
+
+[Colors:Window]
+BackgroundAlternate={{ surfaceVariant.red }},{{ surfaceVariant.green }},{{ surfaceVariant.blue }}
+BackgroundNormal={{ surfaceContainer.red }},{{ surfaceContainer.green }},{{ surfaceContainer.blue }}
+DecorationFocus={{ primary.red }},{{ primary.green }},{{ primary.blue }}
+DecorationHover={{ primary.red }},{{ primary.green }},{{ primary.blue }}
+ForegroundActive={{ klink.red }},{{ klink.green }},{{ klink.blue }}
+ForegroundInactive={{ outline.red }},{{ outline.green }},{{ outline.blue }}
+ForegroundLink={{ klink.red }},{{ klink.green }},{{ klink.blue }}
+ForegroundNegative={{ knegative.red }},{{ knegative.green }},{{ knegative.blue }}
+ForegroundNeutral={{ kneutral.red }},{{ kneutral.green }},{{ kneutral.blue }}
+#--- Window titles, context icons
+ForegroundNormal={{ onSurfaceVariant.red }},{{ onSurfaceVariant.green }},{{ onSurfaceVariant.blue }}
+ForegroundPositive={{ kpositive.red }},{{ kpositive.green }},{{ kpositive.blue }}
+ForegroundVisited={{ kvisited.red }},{{ kvisited.green }},{{ kvisited.blue }}
+
+[KDE]
+contrast=4
+
+[WM]
+activeBackground={{ surfaceContainerHighest.red }},{{ surfaceContainerHighest.green }},{{ surfaceContainerHighest.blue }}
+activeBlend=252,252,252
+activeForeground={{ onSurface.red }},{{ onSurface.green }},{{ onSurface.blue }}
+inactiveBackground={{ secondaryContainer.red }},{{ secondaryContainer.green }},{{ secondaryContainer.blue }}
+inactiveBlend=161,169,177
+inactiveForeground={{ onSecondaryContainer.red }},{{ onSecondaryContainer.green }},{{ onSecondaryContainer.blue }}
+
+[General]
+ColorScheme=Caelestia
+font=Google Sans Flex,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+fixed=JetBrainsMono Nerd Font,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+TerminalApplication=kitty
+TerminalService=kitty.desktop
+
+[Icons]
+Theme=Papirus-Dark
+
+[KDE]
+widgetStyle=Breeze
+SingleClick=false

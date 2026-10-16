@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Hajime はじめ — transição de boas-vindas depois do login.
+# Desligar: crie ~/.config/akari/no-hajime
+
+[[ -e "${XDG_CONFIG_HOME:-$HOME/.config}/akari/no-hajime" ]] && exit 0
+command -v qs >/dev/null || exit 0
+
+# Nome bonito do usuário (campo "nome completo" da conta), senão o login
+name="$(getent passwd "${USER}" | cut -d: -f5 | cut -d, -f1)"
+export AKARI_USER_NAME="${name:-${USER}}"
+
+exec qs -c akari-hajime -n

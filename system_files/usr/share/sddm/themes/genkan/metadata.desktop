@@ -1,0 +1,15 @@
+[SddmGreeterTheme]
+Name=Genkan
+Description=Genkan 玄関 — a entrada da Akari
+Author=Akari
+Copyright=Apache-2.0
+License=Apache-2.0
+Type=sddm-theme
+Version=1.0
+Website=https://github.com/
+Screenshot=preview.png
+MainScript=Main.qml
+ConfigFile=theme.conf
+Theme-Id=genkan
+Theme-API=2.0
+QtVersion=6

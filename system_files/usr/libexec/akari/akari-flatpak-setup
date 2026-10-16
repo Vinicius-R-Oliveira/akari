@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Instala os Flatpaks padrão da Akari (ex.: Heroic para a Epic Games).
+# Roda uma vez como serviço do sistema, quando houver internet.
+set -euo pipefail
+
+LIST=/usr/share/akari/flatpaks.list
+STAMP_DIR=/var/lib/akari
+STAMP="${STAMP_DIR}/flatpak-setup-$(sha256sum "${LIST}" | cut -c1-12)"
+
+[[ -e "${STAMP}" ]] && exit 0
+mkdir -p "${STAMP_DIR}"
+
+flatpak remote-add --system --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+mapfile -t apps < <(grep -vE '^\s*(#|$)' "${LIST}")
+if ((${#apps[@]})); then
+    flatpak install --system --noninteractive --or-update flathub "${apps[@]}"
+fi
+
+touch "${STAMP}"

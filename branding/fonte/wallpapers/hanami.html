@@ -1,0 +1,145 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  @font-face{font-family:"Fraktur";src:url("../fonts/UnifrakturCook-Bold.woff2");font-weight:700}
+  html,body{margin:0;width:3840px;height:2160px;background:#040404;overflow:hidden}
+  .layer{position:absolute;inset:0}
+  #title{position:absolute;left:0;right:0;top:210px;text-align:center;font-family:"Fraktur";font-weight:700;
+         font-size:760px;line-height:1;color:#ededed;letter-spacing:.04em;text-shadow:0 0 60px rgba(255,255,255,.08)}
+  #kanji{position:absolute;left:0;right:0;top:820px;text-align:center;font-family:"Noto Serif CJK JP";font-weight:900;
+         font-size:720px;line-height:1;color:transparent;-webkit-text-stroke:3px rgba(255,255,255,.5);letter-spacing:.6em;padding-left:.6em}
+  #haiku{position:absolute;left:0;right:0;top:1790px;text-align:center;font-family:"Noto Serif CJK JP";font-weight:300;
+         color:rgba(255,255,255,.58);font-size:38px;letter-spacing:.34em;line-height:1.9}
+  #sig{position:absolute;left:0;right:0;top:1950px;text-align:center;font-family:Inter;font-weight:300;font-size:22px;
+       letter-spacing:.9em;color:rgba(255,255,255,.32)}
+  .vert{position:absolute;writing-mode:vertical-rl;font-family:"Noto Serif CJK JP";color:rgba(255,255,255,.4);letter-spacing:.5em}
+  .mono{position:absolute;font-family:"DejaVu Sans Mono";font-size:20px;color:rgba(255,255,255,.3);letter-spacing:.2em;line-height:1.8}
+  #flower{position:absolute;left:1370px;top:591px;width:1100px;height:1100px}
+  #flower .ol{stroke-width:2.4} #flower .bl{stroke-width:3}
+</style></head>
+<body>
+<!-- vinheta + moldura tracejada -->
+<svg class="layer" width="3840" height="2160">
+  <defs>
+    <radialGradient id="vig" cx="50%" cy="48%" r="75%">
+      <stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".85"/>
+    </radialGradient>
+    <radialGradient id="aura" cx="50%" cy="54%" r="38%">
+      <stop offset="0" stop-color="#fff" stop-opacity=".09"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="3840" height="2160" fill="url(#aura)"/>
+  <rect x="120" y="96" width="3600" height="1968" rx="40" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="3" stroke-dasharray="26 18"/>
+  <rect x="170" y="146" width="3500" height="1868" rx="26" fill="none" stroke="#fff" stroke-opacity=".18" stroke-width="2" stroke-dasharray="6 14"/>
+  <g stroke="#fff" stroke-opacity=".8" stroke-width="4" fill="none">
+    <path d="M120 200 V136 Q120 96 160 96 H224"/><path d="M3616 96 H3680 Q3720 96 3720 136 V200"/>
+    <path d="M120 1960 V2024 Q120 2064 160 2064 H224"/><path d="M3616 2064 H3680 Q3720 2064 3720 2024 V1960"/>
+  </g>
+</svg>
+
+<div id="title">akari</div>
+<div id="kanji">灯り</div>
+
+<!-- silhueta preta que "corta" o título, como a personagem no vídeo -->
+<svg id="flowerMask" class="layer" width="3840" height="2160" style="pointer-events:none">
+  <g transform="translate(1920 1152) scale(5.5)" fill="#040404" stroke="#040404" stroke-width="2">
+    <path d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(0)"/>
+    <path d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(72)"/>
+    <path d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(144)"/>
+    <path d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(216)"/>
+    <path d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(288)"/>
+    <circle r="16"/>
+  </g>
+</svg>
+<svg id="flower" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <title>Akari — logo</title>
+  <defs>
+    <radialGradient id="halo" cx="0" cy="0" r="98" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff" stop-opacity=".32"/>
+      <stop offset=".45" stop-color="#fff" stop-opacity=".08"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="paper" cx="0" cy="0" r="78" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff" stop-opacity=".7"/>
+      <stop offset=".3" stop-color="#f2f2f2" stop-opacity=".3"/>
+      <stop offset=".7" stop-color="#bdbdbd" stop-opacity=".08"/>
+      <stop offset="1" stop-color="#8a8a8a" stop-opacity=".04"/>
+    </radialGradient>
+    <radialGradient id="core" cx="0" cy="0" r="12" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset=".7" stop-color="#fafafa"/>
+      <stop offset="1" stop-color="#d9d9d9"/>
+    </radialGradient>
+    <filter id="bloom" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3.2"/>
+    </filter>
+    <filter id="bloomBig" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+  </defs>
+  
+    <g transform="translate(100 102)">
+      <circle class="halo" r="98" fill="url(#halo)"/>
+      <g class="glowfill" opacity="1">
+      <path class="fill p0" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(0)" fill="url(#paper)" stroke="none" stroke-width="0" stroke-linejoin="round" />
+      <path class="fill p1" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(72)" fill="url(#paper)" stroke="none" stroke-width="0" stroke-linejoin="round" />
+      <path class="fill p2" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(144)" fill="url(#paper)" stroke="none" stroke-width="0" stroke-linejoin="round" />
+      <path class="fill p3" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(216)" fill="url(#paper)" stroke="none" stroke-width="0" stroke-linejoin="round" />
+      <path class="fill p4" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(288)" fill="url(#paper)" stroke="none" stroke-width="0" stroke-linejoin="round" />
+      </g>
+      <g class="bloom" filter="url(#bloom)" opacity=".6">
+      <path class="bl p0" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(0)" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round" pathLength="1"/>
+      <path class="bl p1" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(72)" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round" pathLength="1"/>
+      <path class="bl p2" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(144)" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round" pathLength="1"/>
+      <path class="bl p3" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(216)" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round" pathLength="1"/>
+      <path class="bl p4" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(288)" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round" pathLength="1"/>
+      </g>
+      <g class="lines">
+      <path class="ol p0" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(0)" fill="none" stroke="#fff" stroke-width="4.6" stroke-linejoin="round" pathLength="1"/>
+      <path class="ol p1" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(72)" fill="none" stroke="#fff" stroke-width="4.6" stroke-linejoin="round" pathLength="1"/>
+      <path class="ol p2" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(144)" fill="none" stroke="#fff" stroke-width="4.6" stroke-linejoin="round" pathLength="1"/>
+      <path class="ol p3" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(216)" fill="none" stroke="#fff" stroke-width="4.6" stroke-linejoin="round" pathLength="1"/>
+      <path class="ol p4" d="M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z" transform="rotate(288)" fill="none" stroke="#fff" stroke-width="4.6" stroke-linejoin="round" pathLength="1"/>
+      </g>
+      <circle class="corehalo" r="26" fill="#fff" opacity=".55" filter="url(#bloomBig)"/>
+      <circle class="core" r="10" fill="url(#core)"/>
+    </g>
+</svg>
+
+
+<div id="haiku">さまざまの　事おもひ出す　桜かな<br><span style="font-size:26px;letter-spacing:.5em;opacity:.7">— 芭蕉</span></div>
+<div id="sig">AKARI · LINUX · 灯りをともす</div>
+
+<div class="vert" style="right:250px;top:300px;font-size:40px">光の花は夜に咲く</div>
+<div class="vert" style="right:320px;top:300px;font-size:22px;color:rgba(255,255,255,.25)">第一章　はじまり</div>
+<div class="mono" style="left:250px;top:250px">AKR—001<br>FEDORA BASE<br>HYPRLAND / CAELESTIA</div>
+<div class="mono" style="left:250px;bottom:240px">35.6762° N<br>139.6503° E</div>
+<div class="mono" style="right:250px;bottom:240px;text-align:right">灯 / LIGHT<br>花 / FLOWER</div>
+
+<!-- pétalas caindo -->
+<svg id="petals" class="layer" width="3840" height="2160"></svg>
+<!-- grão -->
+<svg class="layer" width="3840" height="2160" style="mix-blend-mode:screen;opacity:.09">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="3840" height="2160" filter="url(#n)"/>
+</svg>
+<svg class="layer" width="3840" height="2160"><rect width="3840" height="2160" fill="url(#vig)"/>
+  <defs><radialGradient id="vig" cx="50%" cy="48%" r="75%"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".8"/></radialGradient></defs></svg>
+
+<script>
+  // pétalas com seed fixa (sempre o mesmo resultado)
+  let s = 7; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  const P = "M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z";
+  const svg = document.getElementById("petals");
+  let html = '<defs><filter id="b1"><feGaussianBlur stdDeviation="2"/></filter><filter id="b2"><feGaussianBlur stdDeviation="6"/></filter></defs>';
+  for (let i = 0; i < 46; i++) {
+    let x = 260 + r() * 3320, y = 180 + r() * 1800;
+    if (Math.hypot(x - 1920, y - 1152) < 560) continue;           // não cobre a flor
+    const depth = r(), sc = .25 + depth * .55, op = .12 + depth * .5;
+    const f = depth < .33 ? 'filter="url(#b2)"' : depth < .6 ? 'filter="url(#b1)"' : '';
+    html += `<path d="${P}" transform="translate(${x|0} ${y|0}) rotate(${(r()*360)|0}) scale(${sc.toFixed(2)} ${(sc*(.55+r()*.45)).toFixed(2)})"
+             fill="#fff" fill-opacity="${(op*.35).toFixed(2)}" stroke="#fff" stroke-opacity="${op.toFixed(2)}" stroke-width="3" ${f}/>`;
+  }
+  svg.innerHTML = html;
+</script>
+</body></html>

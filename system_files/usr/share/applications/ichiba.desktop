@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Ichiba
+GenericName=Loja de apps
+Comment=Instale apps do Flathub e atualize a Akari
+Exec=ichiba
+Icon=ichiba
+Categories=System;PackageManager;
+Keywords=loja;apps;flatpak;flathub;instalar;atualizar;store;
+StartupWMClass=ichiba

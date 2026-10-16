@@ -1,0 +1,15 @@
+[Unit]
+Description=Akari: instalar os Flatpaks padrão (Heroic)
+Wants=network-online.target
+After=network-online.target flatpak-system-helper.service
+# Sem internet no primeiro boot: continua tentando até conseguir
+StartLimitIntervalSec=0
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/akari/akari-flatpak-setup
+Restart=on-failure
+RestartSec=90
+
+[Install]
+WantedBy=multi-user.target

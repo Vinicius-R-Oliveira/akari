@@ -1,0 +1,125 @@
+// ─────────────────────────────────────────────────────────────
+//  Akari 灯り — animação de boot (Plymouth)
+//  A flor se desenha pétala por pétala, o centro acende e fica
+//  "respirando" enquanto a barra fina mostra o progresso.
+// ─────────────────────────────────────────────────────────────
+
+Window.SetBackgroundTopColor(0, 0, 0);
+Window.SetBackgroundBottomColor(0, 0, 0);
+
+W = Window.GetWidth();
+H = Window.GetHeight();
+X0 = Window.GetX();
+Y0 = Window.GetY();
+
+size = Math.Int(H * 0.15);
+if (size < 110) size = 110;
+
+// Quadros da flor (gerados por branding/fonte/gerar-assets.py)
+N = 48;
+for (i = 0; i < N; i++) {
+    if (i < 10) name = "flor-0" + i + ".png";
+    else name = "flor-" + i + ".png";
+    frames[i] = Image(name).Scale(size, size);
+}
+
+flor = Sprite(frames[0]);
+flor.SetX(X0 + W / 2 - size / 2);
+flor.SetY(Y0 + H / 2 - size / 2 - H * 0.04);
+flor.SetZ(10);
+
+// Barra de progresso fininha
+barW = Math.Int(size * 1.15);
+barY = flor.GetY() + size + Math.Int(H * 0.05);
+trilho = Sprite(Image("trilho.png").Scale(barW, 2));
+trilho.SetX(X0 + W / 2 - barW / 2);
+trilho.SetY(barY);
+trilho.SetZ(10);
+barra_img = Image("barra.png");
+barra = Sprite();
+barra.SetX(X0 + W / 2 - barW / 2);
+barra.SetY(barY);
+barra.SetZ(11);
+
+nome = Sprite(Image.Text("A   K   A   R   I", 0.5, 0.5, 0.5, 1, "Sans 10"));
+nome.SetX(X0 + W / 2 - nome.GetImage().GetWidth() / 2);
+nome.SetY(barY + 22);
+nome.SetZ(10);
+
+// Mensagens (ex.: verificação de disco)
+msg = Sprite();
+msg.SetZ(12);
+
+// Senha do disco criptografado
+pedido = Sprite();
+pedido.SetZ(12);
+pontos = Sprite();
+pontos.SetZ(12);
+
+tick = 0;
+
+fun refresh() {
+    global.tick = tick + 1;
+    idx = Math.Int(tick / 2);
+    if (idx < N) {
+        flor.SetImage(frames[idx]);
+    } else {
+        flor.SetImage(frames[N - 1]);
+        flor.SetOpacity(0.8 + 0.2 * Math.Cos(tick / 20));
+    }
+}
+Plymouth.SetRefreshFunction(refresh);
+
+fun progress(duration, p) {
+    w = Math.Int(barW * p);
+    if (w < 1) w = 1;
+    barra.SetImage(barra_img.Scale(w, 2));
+}
+Plymouth.SetBootProgressFunction(progress);
+
+fun show_bar(visible) {
+    trilho.SetOpacity(visible);
+    barra.SetOpacity(visible);
+    nome.SetOpacity(visible);
+}
+
+fun display_password(prompt, bullets) {
+    show_bar(0);
+    if (prompt == "") prompt = "Senha do disco";
+    pi = Image.Text(prompt, 0.85, 0.85, 0.85, 1, "Sans 12");
+    pedido.SetImage(pi);
+    pedido.SetX(X0 + W / 2 - pi.GetWidth() / 2);
+    pedido.SetY(barY - 6);
+    pedido.SetOpacity(1);
+
+    s = "";
+    for (b = 0; b < bullets; b++) s = s + "●  ";
+    if (s == "") s = " ";
+    bi = Image.Text(s, 1, 1, 1, 1, "Sans 14");
+    pontos.SetImage(bi);
+    pontos.SetX(X0 + W / 2 - bi.GetWidth() / 2);
+    pontos.SetY(barY + 30);
+    pontos.SetOpacity(1);
+}
+Plymouth.SetDisplayPasswordFunction(display_password);
+
+fun display_normal() {
+    pedido.SetOpacity(0);
+    pontos.SetOpacity(0);
+    show_bar(1);
+}
+Plymouth.SetDisplayNormalFunction(display_normal);
+
+fun message(text) {
+    mi = Image.Text(text, 0.6, 0.6, 0.6, 1, "Sans 10");
+    msg.SetImage(mi);
+    msg.SetX(X0 + W / 2 - mi.GetWidth() / 2);
+    msg.SetY(Y0 + H - 60);
+}
+Plymouth.SetMessageFunction(message);
+
+fun quit() {
+    flor.SetImage(frames[N - 1]);
+    flor.SetOpacity(1);
+}
+Plymouth.SetQuitFunction(quit);

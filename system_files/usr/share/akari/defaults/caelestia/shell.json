@@ -1,0 +1,56 @@
+{
+    "general": {
+        "logo": "/usr/share/akari/logo/akari-icone-branco.svg",
+        "apps": {
+            "terminal": [
+                "kitty"
+            ],
+            "audio": [
+                "pwvucontrol"
+            ],
+            "playback": [
+                "mpv"
+            ],
+            "explorer": [
+                "dolphin"
+            ]
+        }
+    },
+    "appearance": {
+        "transparency": {
+            "enabled": true,
+            "base": 0.85,
+            "layers": 0.4
+        }
+    },
+    "background": {
+        "enabled": true,
+        "wallpaperEnabled": true,
+        "desktopClock": {
+            "enabled": true,
+            "position": "bottom-right",
+            "shadow": {
+                "enabled": true,
+                "opacity": 0.7,
+                "blur": 0.4
+            }
+        },
+        "visualiser": {
+            "enabled": true,
+            "autoHide": true,
+            "blur": false,
+            "rounding": 1,
+            "spacing": 1
+        }
+    },
+    "border": {
+        "thickness": 10,
+        "rounding": 25
+    },
+    "services": {
+        "smartScheme": false
+    },
+    "paths": {
+        "wallpaperDir": "__WALLPAPER_DIR__"
+    }
+}

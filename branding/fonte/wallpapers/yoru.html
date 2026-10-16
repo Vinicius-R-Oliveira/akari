@@ -1,0 +1,54 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Akari · 夜 Yoru — wallpaper minimalista (bom para trabalhar) -->
+<style>
+  @font-face{font-family:"Fraktur";src:url("../fonts/UnifrakturCook-Bold.woff2");font-weight:700}
+  html,body{margin:0;width:3840px;height:2160px;background:#030303;overflow:hidden}
+  .layer{position:absolute;inset:0}
+  #flower{position:absolute;left:1020px;top:740px;width:640px;height:640px}
+  #flower .ol{stroke-width:3} #flower .bl{stroke-width:3.6}
+  #kanji{position:absolute;left:2480px;top:330px;writing-mode:vertical-rl;font-family:"Noto Serif CJK JP";font-weight:900;
+         font-size:620px;line-height:1;color:transparent;-webkit-text-stroke:2.5px rgba(255,255,255,.38);letter-spacing:.08em}
+  #word{position:absolute;left:1730px;top:930px;font-family:"Fraktur";font-weight:700;font-size:250px;color:#e8e8e8;letter-spacing:.03em}
+  #line{position:absolute;left:1730px;top:1215px;width:640px;height:2px;background:linear-gradient(90deg,rgba(255,255,255,.55),rgba(255,255,255,0))}
+  #sub{position:absolute;left:1734px;top:1250px;font-family:"Noto Serif CJK JP";font-weight:300;font-size:34px;letter-spacing:.42em;color:rgba(255,255,255,.55)}
+  #sub2{position:absolute;left:1736px;top:1320px;font-family:"DejaVu Sans Mono";font-size:20px;letter-spacing:.35em;color:rgba(255,255,255,.28)}
+</style></head>
+<body>
+<svg class="layer" width="3840" height="2160">
+  <defs>
+    <radialGradient id="aura" cx="31%" cy="50%" r="30%">
+      <stop offset="0" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="3840" height="2160" fill="url(#aura)"/>
+  <g stroke="#fff" stroke-opacity=".55" stroke-width="3" fill="none">
+    <path d="M140 230 V150 Q140 110 180 110 H260"/><path d="M3580 110 H3660 Q3700 110 3700 150 V230"/>
+    <path d="M140 1930 V2010 Q140 2050 180 2050 H260"/><path d="M3580 2050 H3660 Q3700 2050 3700 2010 V1930"/>
+  </g>
+</svg>
+<div id="kanji">灯り</div>
+<!--FLOR-->
+<div id="word">akari</div>
+<div id="line"></div>
+<div id="sub">夜を照らす小さな灯り</div>
+<div id="sub2">YORU · 夜 · A LUZ QUE FICA ACESA</div>
+<svg id="petals" class="layer" width="3840" height="2160"></svg>
+<svg class="layer" width="3840" height="2160" style="mix-blend-mode:screen;opacity:.08">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="3840" height="2160" filter="url(#n)"/>
+</svg>
+<svg class="layer" width="3840" height="2160"><defs><radialGradient id="vig" cx="45%" cy="50%" r="78%"><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".85"/></radialGradient></defs><rect width="3840" height="2160" fill="url(#vig)"/></svg>
+<script>
+  let s = 21; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  const P = "M0 -14 C-20 -30 -26 -58 -12 -76 L0 -66 L12 -76 C26 -58 20 -30 0 -14 Z";
+  let h = '<defs><filter id="b1"><feGaussianBlur stdDeviation="2"/></filter><filter id="b2"><feGaussianBlur stdDeviation="7"/></filter></defs>';
+  for (let i = 0; i < 18; i++) {
+    const x = 300 + r() * 3300, y = 200 + r() * 1760;
+    if (x > 900 && x < 2500 && y > 650 && y < 1450) continue;
+    const d = r(), sc = .2 + d * .45, op = .1 + d * .4, f = d < .4 ? 'filter="url(#b2)"' : d < .7 ? 'filter="url(#b1)"' : '';
+    h += `<path d="${P}" transform="translate(${x|0} ${y|0}) rotate(${(r()*360)|0}) scale(${sc.toFixed(2)} ${(sc*(.55+r()*.45)).toFixed(2)})" fill="#fff" fill-opacity="${(op*.3).toFixed(2)}" stroke="#fff" stroke-opacity="${op.toFixed(2)}" stroke-width="3" ${f}/>`;
+  }
+  document.getElementById("petals").innerHTML = h;
+</script>
+</body></html>

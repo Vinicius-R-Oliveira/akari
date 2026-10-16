@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+# Instala (se preciso) e abre o JetBrains Toolbox, que gerencia as IDEs da JetBrains.
+#   akari-jetbrains-toolbox                → instala se faltar e abre
+#   akari-jetbrains-toolbox --install-only → só instala (usado no primeiro login)
+set -u
+
+INSTALL_ONLY=0
+QUIET=0
+for a in "$@"; do
+    case "$a" in
+    --install-only) INSTALL_ONLY=1 ;;
+    --quiet) QUIET=1 ;;
+    esac
+done
+
+DATA="${XDG_DATA_HOME:-$HOME/.local/share}"
+DEST="${DATA}/JetBrains/Toolbox"
+BIN=""
+
+find_bin() {
+    BIN="$(find "${DEST}" -maxdepth 3 -type f -name 'jetbrains-toolbox' -perm -u+x 2>/dev/null | head -n1)"
+}
+
+notify() {
+    [[ "${QUIET}" == 1 && "$1" != "erro" ]] && return
+    command -v notify-send >/dev/null && notify-send -a "Akari" -i akari-logo "JetBrains Toolbox" "$2"
+}
+
+find_bin
+if [[ -z "${BIN}" ]]; then
+    notify info "Baixando o JetBrains Toolbox…"
+    tmp="$(mktemp -d)"
+    trap 'rm -rf "${tmp}"' EXIT
+    url="https://data.services.jetbrains.com/products/download?platform=linux&code=TBA"
+    if ! curl -fsSL --retry 3 -o "${tmp}/toolbox.tar.gz" "${url}"; then
+        notify erro "Não consegui baixar o Toolbox. Verifique a internet e tente de novo pelo launcher."
+        exit 1
+    fi
+    mkdir -p "${tmp}/x" "${DEST}"
+    tar -xzf "${tmp}/toolbox.tar.gz" -C "${tmp}/x"
+    src="$(find "${tmp}/x" -type f -name 'jetbrains-toolbox' | head -n1)"
+    if [[ -z "${src}" ]]; then
+        notify erro "O pacote do Toolbox veio num formato inesperado."
+        exit 1
+    fi
+    # Copia a pasta inteira do executável (bin/ e libs ao lado)
+    srcdir="$(dirname "${src}")"
+    [[ "$(basename "${srcdir}")" == "bin" ]] && srcdir="$(dirname "${srcdir}")"
+    cp -a "${srcdir}/." "${DEST}/"
+    find_bin
+    [[ -n "${BIN}" ]] || { notify erro "Falha ao instalar o Toolbox."; exit 1; }
+    notify info "Instalado! Abra pelo launcher para baixar IntelliJ, PyCharm, WebStorm…"
+    rm -rf "${tmp}"
+    trap - EXIT
+fi
+
+[[ "${INSTALL_ONLY}" == 1 ]] && exit 0
+exec "${BIN}"

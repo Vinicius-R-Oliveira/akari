@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=JetBrains Toolbox
+Comment=Instale e atualize as IDEs da JetBrains
+Exec=/usr/bin/akari-jetbrains-toolbox
+Icon=jetbrains-toolbox
+Categories=Development;IDE;
+StartupWMClass=jetbrains-toolbox

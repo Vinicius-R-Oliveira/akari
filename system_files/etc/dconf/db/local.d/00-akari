@@ -1,0 +1,9 @@
+# Padrões de aparência para apps GTK (o usuário pode mudar depois)
+[org/gnome/desktop/interface]
+color-scheme='prefer-dark'
+gtk-theme='adw-gtk3-dark'
+icon-theme='Papirus-Dark'
+cursor-theme='Bibata-Modern-Ice'
+cursor-size=24
+font-name='Google Sans Flex 11'
+monospace-font-name='JetBrainsMono Nerd Font 11'

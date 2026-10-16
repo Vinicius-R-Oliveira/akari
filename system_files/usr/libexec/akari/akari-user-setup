@@ -1,0 +1,112 @@
+#!/usr/bin/env bash
+# ─────────────────────────────────────────────────────────────
+#  Prepara a conta do usuário para a Akari.
+#  Roda a cada login, antes do Hyprland. É rápido e seguro:
+#  só cria o que ainda não existe e nunca apaga mudanças suas.
+# ─────────────────────────────────────────────────────────────
+set -u
+
+CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}"
+STATE="${XDG_STATE_HOME:-$HOME/.local/state}"
+AKARI_STATE="${STATE}/akari"
+DOTS=/usr/share/akari/caelestia-dots
+DEF=/usr/share/akari/defaults
+
+mkdir -p "${CONFIG}" "${AKARI_STATE}"
+
+say() { echo "[akari-user-setup] $*"; }
+
+# Copia src → dst só se dst ainda não existir
+copy_if_missing() {
+    local src="$1" dst="$2"
+    [[ -e "${src}" ]] || return 0
+    if [[ ! -e "${dst}" ]]; then
+        mkdir -p "$(dirname "${dst}")"
+        cp -a "${src}" "${dst}"
+        return 0
+    fi
+    return 1
+}
+
+# ── 1. Pastas do usuário (Imagens, Vídeos, Downloads...) ─────
+command -v xdg-user-dirs-update >/dev/null && xdg-user-dirs-update
+PICS="$(xdg-user-dir PICTURES 2>/dev/null || echo "${HOME}/Pictures")"
+[[ "${PICS}" == "${HOME}" ]] && PICS="${HOME}/Pictures"
+WALLDIR="${PICS}/Wallpapers"
+mkdir -p "${WALLDIR}"
+export XDG_PICTURES_DIR="${PICS}"
+
+# ── 2. Configs do Caelestia ──────────────────────────────────
+# O Hyprland do Caelestia não deve ser editado à mão (suas mudanças vão em
+# ~/.config/caelestia/hypr-*.lua), então ele acompanha as atualizações do sistema.
+dots_ver="$(cat "${DOTS}/.akari-version" 2>/dev/null || echo 0)"
+if [[ -d "${DOTS}/hypr" && "$(cat "${AKARI_STATE}/dots-version" 2>/dev/null)" != "${dots_ver}" ]]; then
+    say "Sincronizando configs do Hyprland (${dots_ver})"
+    mkdir -p "${CONFIG}/hypr"
+    cp -a "${DOTS}/hypr/." "${CONFIG}/hypr/"
+    echo "${dots_ver}" >"${AKARI_STATE}/dots-version"
+fi
+
+for d in fish btop; do
+    copy_if_missing "${DOTS}/${d}" "${CONFIG}/${d}" && say "Config ${d} criada"
+done
+copy_if_missing "${DOTS}/starship.toml" "${CONFIG}/starship.toml"
+
+# fastfetch com a flor da Akari no lugar do logo
+if copy_if_missing "${DOTS}/fastfetch" "${CONFIG}/fastfetch"; then
+    cfg="${CONFIG}/fastfetch/config.jsonc"
+    if [[ -f "${cfg}" ]] && command -v jq >/dev/null; then
+        # jq não lê comentários de JSONC: remove linhas comentadas antes
+        grep -v '^\s*//' "${cfg}" |
+            jq '.logo = {"type":"auto","source":"/usr/share/akari/logo/akari-flor-512.png","width":22,"padding":{"top":1,"right":3}}' \
+                >"${cfg}.tmp" && mv "${cfg}.tmp" "${cfg}"
+    fi
+fi
+
+# ── 3. Arquivos pessoais do Caelestia ────────────────────────
+C="${CONFIG}/caelestia"
+mkdir -p "${C}/templates"
+if [[ ! -e "${C}/shell.json" ]]; then
+    sed "s|__WALLPAPER_DIR__|${WALLDIR}|g" "${DEF}/caelestia/shell.json" >"${C}/shell.json"
+fi
+copy_if_missing "${DEF}/caelestia/hypr-vars.lua" "${C}/hypr-vars.lua"
+copy_if_missing "${DEF}/caelestia/hypr-user.lua" "${C}/hypr-user.lua"
+for t in "${DEF}"/caelestia/templates/*; do
+    copy_if_missing "${t}" "${C}/templates/$(basename "${t}")"
+done
+touch "${C}/user-config.fish"
+
+# ── 4. Terminal ──────────────────────────────────────────────
+copy_if_missing "${DEF}/kitty/kitty.conf" "${CONFIG}/kitty/kitty.conf"
+
+# ── 5. Apps Qt/KDE (Dolphin) seguem as cores do Caelestia ────
+# O template ~/.config/caelestia/templates/kdeglobals é preenchido pelo
+# Caelestia a cada troca de cor e cai em ~/.local/state/caelestia/theme/.
+if [[ ! -e "${CONFIG}/kdeglobals" || -L "${CONFIG}/kdeglobals" ]]; then
+    ln -sfn "${STATE}/caelestia/theme/kdeglobals" "${CONFIG}/kdeglobals"
+fi
+
+# ── 6. Wallpapers e tema inicial (preto e branco seguindo o wallpaper) ─
+for w in /usr/share/akari/wallpapers/*; do
+    [[ -f "${w}" ]] || continue
+    copy_if_missing "${w}" "${WALLDIR}/$(basename "${w}")"
+done
+
+if [[ ! -e "${AKARI_STATE}/theme-done" ]] && command -v caelestia >/dev/null; then
+    say "Aplicando wallpaper e cores iniciais"
+    first_wall="$(find "${WALLDIR}" -maxdepth 1 -name 'akari-*' | sort | head -n1)"
+    if [[ -n "${first_wall}" ]]; then
+        # Em segundo plano: o login não espera; o Caelestia aplica as cores ao vivo
+        (
+            timeout 60 caelestia wallpaper -f "${first_wall}" || true
+            timeout 60 caelestia scheme set -n dynamic -v monochrome -m dark || true
+            touch "${AKARI_STATE}/theme-done"
+        ) </dev/null >>"${AKARI_STATE}/theme.log" 2>&1 &
+        disown || true
+    fi
+fi
+
+# ── 7. Foto de perfil (dashboard do Caelestia) ───────────────
+copy_if_missing /usr/share/akari/logo/akari-avatar.png "${HOME}/.face"
+
+say "Pronto"
