@@ -44,7 +44,7 @@ jobs:
       matrix:
         disk-type: ["qcow2", "anaconda-iso"]
     permissions:
-      contents: read
+      contents: write
       packages: read
       id-token: write
 
@@ -100,6 +100,36 @@ jobs:
           chown: ${{ env.USER_UID }}:${{ env.USER_GID }}
           types: ${{ matrix.disk-type }}
           additional-args: --use-librepo=True --rootfs btrfs
+
+      # A ISO vira um Release com links fixos (o artifact de 5 GB expira e não retoma).
+      # O GitHub limita cada arquivo de Release a 2 GB, então ela vai em partes.
+      - name: Publicar a ISO como Release (em partes)
+        if: matrix.disk-type == 'anaconda-iso' && github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OUT: ${{ steps.build.outputs.output-directory }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          ISO="$(find "${OUT}" -name '*.iso' | head -n1)"
+          echo "ISO: ${ISO}"
+          mkdir -p release
+          cd release
+          split -b 1900M -d -a 3 --numeric-suffixes=1 "${ISO}" akari-install.iso.
+          (cd "$(dirname "${ISO}")" && sha256sum "$(basename "${ISO}")") | awk '{print $1"  akari-install.iso"}' > akari-install.iso.sha256
+          parts="$(ls akari-install.iso.0* | tr '\n' ' ' | sed 's/ $//; s/ / + /g')"
+          printf '@echo off\r\necho Juntando as partes da ISO da Akari...\r\ncopy /b %s akari-install.iso\r\necho Pronto: akari-install.iso\r\npause\r\n' "${parts}" > juntar-iso-windows.bat
+          printf '#!/bin/sh\ncat akari-install.iso.0* > akari-install.iso && sha256sum -c akari-install.iso.sha256\n' > juntar-iso-linux.sh
+          ls -la
+          TAG=iso-latest
+          if ! gh release view "${TAG}" -R "${REPO}" >/dev/null 2>&1; then
+            gh release create "${TAG}" -R "${REPO}" --title "Akari · ISO de instalação" \
+              --notes "Baixe TODAS as partes akari-install.iso.0XX e o arquivo juntar-iso. No Windows, deixe tudo na mesma pasta e dê dois cliques em juntar-iso-windows.bat. No Linux: sh juntar-iso-linux.sh. O resultado é o akari-install.iso."
+          fi
+          for old in $(gh release view "${TAG}" -R "${REPO}" --json assets -q '.assets[].name'); do
+            gh release delete-asset "${TAG}" "${old}" -R "${REPO}" -y
+          done
+          gh release upload "${TAG}" -R "${REPO}" ./*
 
       - name: Upload disk images and Checksum to Job Artifacts
         if: inputs.upload-to-s3 != true && github.event_name != 'pull_request'
