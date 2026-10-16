@@ -16,6 +16,14 @@ want fastfetch btop starship eza zoxide direnv bat ripgrep fd-find git \
 
 log "Temas GTK/ícones"
 want adw-gtk3-theme papirus-icon-theme
+if [[ ! -d /usr/share/icons/Papirus-Dark ]]; then
+    log "Papirus não veio do repositório: baixando do GitHub"
+    fetch "https://codeload.github.com/PapirusDevelopmentTeam/papirus-icon-theme/tar.gz/refs/heads/master" /tmp/papirus.tgz
+    mkdir -p /tmp/papirus && tar -xzf /tmp/papirus.tgz -C /tmp/papirus --strip-components=1
+    cp -a /tmp/papirus/Papirus /tmp/papirus/Papirus-Dark /tmp/papirus/Papirus-Light /usr/share/icons/
+    rm -rf /tmp/papirus /tmp/papirus.tgz
+    for t in Papirus Papirus-Dark Papirus-Light; do gtk-update-icon-cache -f "/usr/share/icons/${t}" || true; done
+fi
 
 FONTDIR=/usr/share/fonts/akari
 mkdir -p "${FONTDIR}"

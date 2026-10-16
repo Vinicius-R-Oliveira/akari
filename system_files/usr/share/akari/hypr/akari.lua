@@ -38,6 +38,32 @@ hl.config({
     },
 })
 
+-- Máquina virtual (VMware, VirtualBox, QEMU, Hyper-V): a aceleração 3D virtual
+-- não funciona com o Qt/Quickshell (tela preta), então desenha pelo processador.
+-- No computador de verdade nada muda. Forçar: crie ~/.config/akari/software-render
+local function read_file(path)
+    local f = io.open(path)
+    if not f then return "" end
+    local s = f:read("*a") or ""
+    f:close()
+    return s
+end
+
+local function in_vm()
+    local dmi = (read_file("/sys/class/dmi/id/sys_vendor") .. " " .. read_file("/sys/class/dmi/id/product_name")):lower()
+    for _, v in ipairs({ "vmware", "virtualbox", "innotek", "qemu", "kvm", "bochs", "parallels", "virtual machine", "xen" }) do
+        if dmi:find(v, 1, true) then
+            return true
+        end
+    end
+    return false
+end
+
+local home = os.getenv("HOME") or ""
+if in_vm() or read_file(home .. "/.config/akari/software-render") ~= "" or io.open(home .. "/.config/akari/software-render") then
+    hl.env("LIBGL_ALWAYS_SOFTWARE", "1")
+end
+
 -- Apps Qt/KDE (Dolphin) usam as cores do Caelestia via kdeglobals
 hl.env("QT_QPA_PLATFORMTHEME", "kde")
 
