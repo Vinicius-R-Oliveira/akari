@@ -119,12 +119,12 @@ jobs:
           sudo podman system prune -af >/dev/null 2>&1 || true
           sudo rm -rf /var/lib/containers/storage/overlay-images 2>/dev/null || true
           df -h /
-          ISO="$(find "${OUT}" -type f -name '*.iso' -print -quit)"
+          ISO="$(realpath "$(find "${OUT}" -type f -name '*.iso' -print -quit)")"
           echo "ISO: ${ISO}"
           ls -la "$(dirname "${ISO}")"
           mkdir -p "${RUNNER_TEMP}/release"
           cd "${RUNNER_TEMP}/release"
-          sudo split -b 1900M -d -a 3 --numeric-suffixes=1 "${ISO}" akari-install.iso.
+          sudo split -b 1900M -a 3 --numeric-suffixes=1 "${ISO}" akari-install.iso.
           sudo chown "$(id -u):$(id -g)" akari-install.iso.*
           sudo sha256sum "${ISO}" | awk '{print $1"  akari-install.iso"}' > akari-install.iso.sha256
           # A ISO original não é mais necessária (libera espaço para o upload)
