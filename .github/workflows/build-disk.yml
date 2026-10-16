@@ -111,12 +111,21 @@ jobs:
           REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
-          ISO="$(find "${OUT}" -name '*.iso' | head -n1)"
+          df -h /
+          # Libera espaço: as imagens de container usadas na montagem não são mais necessárias
+          sudo podman system prune -af >/dev/null 2>&1 || true
+          sudo rm -rf /var/lib/containers/storage/overlay-images 2>/dev/null || true
+          df -h /
+          ISO="$(find "${OUT}" -type f -name '*.iso' -print -quit)"
           echo "ISO: ${ISO}"
-          mkdir -p release
-          cd release
-          split -b 1900M -d -a 3 --numeric-suffixes=1 "${ISO}" akari-install.iso.
-          (cd "$(dirname "${ISO}")" && sha256sum "$(basename "${ISO}")") | awk '{print $1"  akari-install.iso"}' > akari-install.iso.sha256
+          ls -la "$(dirname "${ISO}")"
+          mkdir -p "${RUNNER_TEMP}/release"
+          cd "${RUNNER_TEMP}/release"
+          sudo split -b 1900M -d -a 3 --numeric-suffixes=1 "${ISO}" akari-install.iso.
+          sudo chown "$(id -u):$(id -g)" akari-install.iso.*
+          sudo sha256sum "${ISO}" | awk '{print $1"  akari-install.iso"}' > akari-install.iso.sha256
+          # A ISO original não é mais necessária (libera espaço para o upload)
+          sudo rm -f "${ISO}"
           parts="$(ls akari-install.iso.0* | tr '\n' ' ' | sed 's/ $//; s/ / + /g')"
           printf '@echo off\r\necho Juntando as partes da ISO da Akari...\r\ncopy /b %s akari-install.iso\r\necho Pronto: akari-install.iso\r\npause\r\n' "${parts}" > juntar-iso-windows.bat
           printf '#!/bin/sh\ncat akari-install.iso.0* > akari-install.iso && sha256sum -c akari-install.iso.sha256\n' > juntar-iso-linux.sh
