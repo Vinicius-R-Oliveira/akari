@@ -1,0 +1,3 @@
+# Sistema de arquivos padrão ao instalar (o mesmo das edições atômicas do Fedora)
+[install.filesystem.root]
+type = "btrfs"
