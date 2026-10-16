@@ -34,13 +34,17 @@ OUT_VID = OUT_IMG / "animados"
 LOOP = 16   # segundos (igual ao comum.js)
 FPS = 24
 
-# nome → (HTML, variante de cor do Caelestia, modo)
+# nome → (HTML, variante de cor do Caelestia, modo[, False = parado, sem vídeo])
 ANIMADOS = {
     "akari-08-hanami-ugoki": ("hanami-ugoki.html", "monochrome", "dark"),
     "akari-09-yozakura":     ("yozakura.html", "monochrome", "dark"),
     "akari-10-ame":          ("ame.html", "monochrome", "dark"),
     "akari-11-mangetsu":     ("mangetsu.html", "monochrome", "dark"),
     "akari-12-fubuki":       ("fubuki.html", "tonalspot", "dark"),
+    # Rosa: flores de cerejeira "de verdade" (sakura.js)
+    "akari-13-sakura":       ("sakura.html", "tonalspot", "dark", False),   # parado (só imagem)
+    "akari-14-sakura-no-ki": ("sakura-no-ki.html", "tonalspot", "dark"),
+    "akari-15-harukaze":     ("harukaze.html", "tonalspot", "light"),
 }
 
 
@@ -49,7 +53,7 @@ def preparar(html_path: pathlib.Path, tmp: pathlib.Path) -> pathlib.Path:
     for marca, svg in assets.FLORES.items():
         html = html.replace(marca, svg)
     html = html.replace('url("../../fonts/', f'url("{HERE}/fonts/').replace('url("../fonts/', f'url("{HERE}/fonts/')
-    html = html.replace('src="comum.js"', f'src="file://{SRC}/comum.js"')
+    html = html.replace('src="comum.js"', f'src="file://{SRC}/comum.js"').replace('src="sakura.js"', f'src="file://{SRC}/sakura.js"')
     out = tmp / html_path.name
     out.write_text(html)
     return out
@@ -61,7 +65,8 @@ def main():
     with sync_playwright() as p, tempfile.TemporaryDirectory(dir=HERE) as tmp:
         tmp = pathlib.Path(tmp)
         b = p.chromium.launch()
-        for nome, (src, _variant, _mode) in ANIMADOS.items():
+        for nome, (src, _variant, _mode, *extra) in ANIMADOS.items():
+            video = not extra or extra[0]
             if only and nome not in only:
                 continue
             page_file = preparar(SRC / src, tmp)
@@ -77,7 +82,7 @@ def main():
             pg.screenshot(path=str(png))
             Image.open(png).convert("RGB").save(OUT_IMG / f"{nome}.jpg", quality=93, subsampling=0)
             ctx.close()
-            if "--so-capa" in sys.argv:
+            if "--so-capa" in sys.argv or not video:
                 print(nome, "capa")
                 continue
 
@@ -105,8 +110,10 @@ def main():
     # Junta os temas dos animados no temas.json
     temas_path = OUT_IMG / "temas.json"
     temas = json.loads(temas_path.read_text()) if temas_path.exists() else {}
-    for nome, (_src, variant, mode) in ANIMADOS.items():
-        temas[f"{nome}.jpg"] = {"variant": variant, "mode": mode, "video": f"animados/{nome}.mp4"}
+    for nome, (_src, variant, mode, *extra) in ANIMADOS.items():
+        temas[f"{nome}.jpg"] = {"variant": variant, "mode": mode}
+        if not extra or extra[0]:
+            temas[f"{nome}.jpg"]["video"] = f"animados/{nome}.mp4"
     temas_path.write_text(json.dumps(temas, indent=2, ensure_ascii=False) + "\n")
 
 

@@ -1,0 +1,77 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Akari · 桜 Sakura — galho de cerejeira florido em rosa (parado) -->
+<style>
+  @font-face{font-family:"Fraktur";src:url("../../fonts/UnifrakturCook-Bold.woff2");font-weight:700}
+  html,body{margin:0;width:1920px;height:1080px;background:#1a0b13;overflow:hidden}
+  .layer{position:absolute;inset:0}
+  #kanji{position:absolute;right:250px;top:120px;writing-mode:vertical-rl;font-family:"Noto Serif CJK JP";font-weight:900;font-size:360px;line-height:1;
+         color:transparent;-webkit-text-stroke:1.5px rgba(247,182,200,.38)}
+  #word{position:absolute;right:250px;bottom:150px;font-family:"Fraktur";font-weight:700;font-size:170px;color:#f8bccd;
+        text-shadow:0 0 50px rgba(240,140,170,.35)}
+  #sub{position:absolute;right:256px;bottom:118px;font-family:"DejaVu Sans Mono";font-size:12px;letter-spacing:.45em;color:rgba(248,188,205,.5)}
+  #haiku{position:absolute;right:120px;top:140px;writing-mode:vertical-rl;font-family:"Noto Serif CJK JP";font-size:20px;letter-spacing:.55em;color:rgba(248,188,205,.5)}
+  #frente{filter:blur(7px)}
+</style>
+<script src="comum.js"></script>
+<script src="sakura.js"></script>
+</head>
+<body>
+<svg class="layer" width="1920" height="1080">
+  <defs>
+    <radialGradient id="aura" cx="34%" cy="42%" r="60%"><stop offset="0" stop-color="#f08fb0" stop-opacity=".30"/><stop offset=".5" stop-color="#b8486f" stop-opacity=".10"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#aura)"/>
+  <rect x="60" y="48" width="1800" height="984" rx="20" fill="none" stroke="#f7b6c8" stroke-opacity=".3" stroke-width="1.5" stroke-dasharray="13 9"/>
+</svg>
+<div id="kanji">桜</div>
+<div id="haiku">さまざまの　事おもひ出す　桜かな</div>
+<svg id="galho" class="layer" width="1920" height="1080"></svg>
+<div id="word">akari</div>
+<div id="sub">SAKURA · 桜 · AKR—013</div>
+<svg id="frente" class="layer" width="1920" height="1080"></svg>
+<div id="chao" class="layer"></div>
+<svg class="layer" width="1920" height="1080" style="mix-blend-mode:screen;opacity:.06">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="1920" height="1080" filter="url(#n)"/>
+</svg>
+<svg class="layer" width="1920" height="1080"><defs><radialGradient id="vig" cx="40%" cy="45%" r="80%"><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".75"/></radialGradient></defs><rect width="1920" height="1080" fill="url(#vig)"/></svg>
+<script>
+  const r = semente(113);
+  // galho principal entrando pela esquerda + ramos
+  const ramos = [
+    { p: [[-60, 300], [240, 360], [520, 430], [780, 470], [1020, 560], [1180, 690]], w: 30 },
+    { p: [[520, 430], [600, 330], [720, 250], [860, 210]], w: 14 },
+    { p: [[780, 470], [880, 410], [1010, 390], [1120, 330]], w: 12 },
+    { p: [[240, 360], [300, 520], [380, 650], [420, 760]], w: 13 },
+    { p: [[1020, 560], [980, 680], [1000, 800]], w: 9 },
+    { p: [[380, 650], [500, 720], [600, 720]], w: 8 },
+  ];
+  let g = sakuraDefs("sk");
+  for (const rm of ramos) g += galhoCurvo(rm.p, rm.w, "#2c151d") + galhoCurvo(rm.p.map(([x, y]) => [x - 2, y - 3]), Math.max(1.5, rm.w * .14), "rgba(248,188,205,.25)");
+  // flores em cachos ao longo dos ramos
+  const flores = [];
+  for (const rm of ramos) {
+    for (let i = 1; i < rm.p.length; i++) {
+      const [x0, y0] = rm.p[i - 1], [x1, y1] = rm.p[i];
+      const n = 3 + Math.floor(r() * 3);
+      for (let k = 0; k < n; k++) {
+        const t = r();
+        flores.push([x0 + (x1 - x0) * t + (r() - .5) * 90, y0 + (y1 - y0) * t + (r() - .5) * 80, .7 + r() * .9]);
+      }
+    }
+  }
+  flores.sort((a, b) => a[2] - b[2]);
+  for (const [x, y, s] of flores) {
+    if (r() < .15) g += sakuraBotao(x, y, s * 1.4, r() * 360);
+    else g += sakuraFlor(x, y, s, r() * 72, r);
+  }
+  document.getElementById("galho").innerHTML = g;
+  // flores grandes desfocadas na frente (profundidade)
+  let f = sakuraDefs("skf");
+  f += sakuraFlor(1080, 1040, 2.6, 20, r, { id: "skf" }) + sakuraFlor(120, 1010, 2.8, 50, r, { id: "skf" }) + sakuraFlor(1760, 80, 2.2, 10, r, { id: "skf" });
+  document.getElementById("frente").innerHTML = f;
+  // pétalas soltas paradas no ar
+  petalasRosa(document.getElementById("chao"), 40, { seed: 21, dx: 500, dy: 1300, tamMin: 14, tamMax: 34 });
+</script>
+</body></html>

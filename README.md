@@ -83,7 +83,7 @@ Use o GNOME Boxes, o virt-manager ou o VirtualBox com **UEFI**, **4 GB+ de RAM**
 Na primeira vez que você entra, a Akari:
 
 - copia os configs do Caelestia (Hyprland, fish, fastfetch, btop) para a sua pasta;
-- coloca os 12 wallpapers da Akari em `Imagens/Wallpapers` (7 parados + 5 animados) e aplica o principal com as cores em preto e branco;
+- coloca os 15 wallpapers da Akari em `Imagens/Wallpapers` (8 parados + 7 animados) e aplica o principal com as cores em preto e branco;
 - instala o **Heroic** (Flatpak) em segundo plano, assim que houver internet;
 - baixa o **JetBrains Toolbox**. Abra pelo launcher para instalar IntelliJ, PyCharm, WebStorm etc.
 
@@ -116,8 +116,8 @@ A lista completa está no [README do Caelestia](https://github.com/caelestia-dot
 | Apps padrão, atalhos, blur, bordas | `~/.config/caelestia/hypr-vars.lua` |
 | Monitores, regras de janela, atalhos extras | `~/.config/caelestia/hypr-user.lua` |
 | Barra, launcher, transparência, visualizador | `~/.config/caelestia/shell.json` (ou o painel de configurações do Caelestia) |
-| Wallpapers | coloque imagens em `Imagens/Wallpapers` e troque pelo launcher (`>wallpaper`). Cada wallpaper da Akari já muda o tema inteiro (claro/escuro, preto e branco ou pêssego) |
-| Wallpapers animados | escolha os de capa 08 a 12 (Hanami Ugoki, Yozakura, Ame, Mangetsu, Fubuki). Para usar um vídeo seu: ponha `nome.mp4` em `Imagens/Wallpapers/animados/` junto de uma imagem `nome.jpg` em `Imagens/Wallpapers` e escolha a imagem |
+| Wallpapers | coloque imagens em `Imagens/Wallpapers` e troque pelo launcher (`>wallpaper`). Cada wallpaper da Akari já muda o tema inteiro (claro/escuro, preto e branco, pêssego ou rosa) |
+| Wallpapers animados | escolha os de capa 08 a 12, 14 e 15 (Hanami Ugoki, Yozakura, Ame, Mangetsu, Fubuki, Sakura no Ki, Harukaze). Para usar um vídeo seu: ponha `nome.mp4` em `Imagens/Wallpapers/animados/` junto de uma imagem `nome.jpg` em `Imagens/Wallpapers` e escolha a imagem |
 | Desligar os animados (economiza bateria) | `touch ~/.config/akari/no-animated` e escolha o wallpaper de novo |
 | Cores coloridas em vez de preto e branco | launcher → `>variant` (ex.: *tonalspot*, *vibrant*) |
 | Desligar a transição Hajime | `touch ~/.config/akari/no-hajime` |

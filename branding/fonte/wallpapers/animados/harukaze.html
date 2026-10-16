@@ -1,0 +1,72 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Akari · 春風 Harukaze — vento de primavera: galhos claros balançando e pétalas voando (vídeo em loop) -->
+<style>
+  @font-face{font-family:"Fraktur";src:url("../../fonts/UnifrakturCook-Bold.woff2");font-weight:700}
+  html,body{margin:0;width:1920px;height:1080px;background:#fbeef2;overflow:hidden}
+  .layer{position:absolute;inset:0}
+  #kanji{position:absolute;left:0;right:0;top:300px;text-align:center;font-family:"Noto Serif CJK JP";font-weight:900;font-size:330px;line-height:1;
+         color:transparent;-webkit-text-stroke:1.5px rgba(176,64,103,.28);letter-spacing:.3em;padding-left:.3em}
+  #word{position:absolute;left:0;right:0;top:420px;text-align:center;font-family:"Fraktur";font-weight:700;font-size:210px;color:#a63a60;
+        text-shadow:0 10px 40px rgba(220,120,155,.35)}
+  #sub{position:absolute;left:0;right:0;top:700px;text-align:center;font-family:"Noto Serif CJK JP";font-size:20px;letter-spacing:.5em;color:rgba(150,50,85,.6)}
+  #id{position:absolute;left:0;right:0;top:745px;text-align:center;font-family:"DejaVu Sans Mono";font-size:12px;letter-spacing:.45em;color:rgba(150,50,85,.45)}
+  .ramoE{transform-box:view-box;transform-origin:-40px 40px;animation:vE ease-in-out infinite alternate}
+  .ramoD{transform-box:view-box;transform-origin:1960px -20px;animation:vD ease-in-out infinite alternate}
+  @keyframes vE{from{transform:rotate(-1.1deg)}to{transform:rotate(1deg)}}
+  @keyframes vD{from{transform:rotate(1deg)}to{transform:rotate(-1.2deg)}}
+  #frenteBlur{filter:blur(6px)}
+</style>
+<script src="comum.js"></script>
+<script src="sakura.js"></script>
+</head>
+<body>
+<svg class="layer" width="1920" height="1080">
+  <defs>
+    <radialGradient id="aura" cx="50%" cy="55%" r="65%"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".6" stop-color="#fbe3ea" stop-opacity=".5"/><stop offset="1" stop-color="#f3c3d1" stop-opacity=".9"/></radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#aura)"/>
+  <rect x="60" y="48" width="1800" height="984" rx="20" fill="none" stroke="#b0406a" stroke-opacity=".3" stroke-width="1.5" stroke-dasharray="13 9"/>
+</svg>
+<div id="kanji">春風</div>
+<div id="word">akari</div>
+<div id="sub">春風や　花びら運ぶ　灯りかな</div>
+<div id="id">HARUKAZE · 春風 · AKR—015</div>
+<div id="atras" class="layer"></div>
+<svg id="ramos" class="layer" width="1920" height="1080"></svg>
+<div id="frente" class="layer"></div>
+<svg id="frenteBlur" class="layer" width="1920" height="1080"></svg>
+<script>
+  const r = semente(1502);
+  function cacho(pts, larg, classe, dur, atraso) {
+    let s = galhoCurvo(pts, larg, "#5a2c38");
+    const flores = [];
+    for (let i = 1; i < pts.length; i++) {
+      const [x0, y0] = pts[i - 1], [x1, y1] = pts[i];
+      const n = 3 + Math.floor(r() * 3);
+      for (let k = 0; k < n; k++) { const t = r(); flores.push([x0 + (x1 - x0) * t + (r() - .5) * 80, y0 + (y1 - y0) * t + (r() - .5) * 70, .55 + r() * .6]); }
+    }
+    flores.sort((a, b) => a[2] - b[2]);
+    for (const [x, y, sc] of flores) s += r() < .18 ? sakuraBotao(x, y, sc * 1.3, r() * 360) : sakuraFlor(x, y, sc, r() * 72, r, { borda: "rgba(190,80,115,.45)" });
+    return `<g class="${classe}" style="animation-duration:${dur}s;animation-delay:${atraso}s">${s}</g>`;
+  }
+  let g = sakuraDefs("sk", { base: "#e06b92", meio: "#f6b9cb", ponta: "#fff6f8" });
+  // galhos do canto superior esquerdo
+  g += cacho([[-40, 40], [180, 120], [380, 150], [560, 230]], 20, "ramoE", LOOP / 2, -1);
+  g += cacho([[180, 120], [230, 260], [320, 360]], 10, "ramoE", LOOP / 2, -1.4);
+  g += cacho([[380, 150], [500, 90], [640, 70]], 9, "ramoE", LOOP / 2, -1.2);
+  // galhos do canto superior direito
+  g += cacho([[1960, -20], [1760, 110], [1560, 170], [1400, 260]], 22, "ramoD", LOOP / 4 * 2, -3);
+  g += cacho([[1760, 110], [1720, 250], [1640, 340]], 11, "ramoD", LOOP / 2, -3.3);
+  g += cacho([[1560, 170], [1480, 110], [1360, 90]], 9, "ramoD", LOOP / 2, -2.8);
+  // galho de baixo
+  g += cacho([[1980, 980], [1800, 940], [1640, 960], [1500, 900]], 14, "ramoD", LOOP / 2, -5);
+  document.getElementById("ramos").innerHTML = g;
+  // flores grandes desfocadas na frente
+  document.getElementById("frenteBlur").innerHTML = sakuraDefs("skb", { base: "#e06b92", meio: "#f6b9cb", ponta: "#fff6f8" })
+    + sakuraFlor(140, 960, 3.2, 15, r, { id: "skb" }) + sakuraFlor(1830, 470, 2.2, 40, r, { id: "skb" });
+  // vento forte da esquerda para a direita
+  petalasRosa(document.getElementById("atras"), 40, { seed: 4, dx: 2100, dy: 700, tamMin: 10, tamMax: 22 });
+  petalasRosa(document.getElementById("frente"), 34, { seed: 46, dx: 2400, dy: 600, tamMin: 22, tamMax: 48 });
+</script>
+</body></html>

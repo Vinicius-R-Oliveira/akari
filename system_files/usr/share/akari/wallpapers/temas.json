@@ -51,5 +51,19 @@
     "variant": "tonalspot",
     "mode": "dark",
     "video": "animados/akari-12-fubuki.mp4"
+  },
+  "akari-13-sakura.jpg": {
+    "variant": "tonalspot",
+    "mode": "dark"
+  },
+  "akari-14-sakura-no-ki.jpg": {
+    "variant": "tonalspot",
+    "mode": "dark",
+    "video": "animados/akari-14-sakura-no-ki.mp4"
+  },
+  "akari-15-harukaze.jpg": {
+    "variant": "tonalspot",
+    "mode": "light",
+    "video": "animados/akari-15-harukaze.mp4"
   }
 }
